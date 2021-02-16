@@ -8,9 +8,20 @@
 <body>
 <h1>你好世界</h1>
 <img src="static/image/500.jpg"/>
+<button>测试AJAX</button>
 <script>
     $(function () {
         $("h1").html("我是杨杰");
+        $("button").eq(0).click(function (){
+            $.ajax({
+                url:"/testajax",
+                type:"post",
+                data:{"test":"你爹"},
+                success:function (ret){
+                    console.log(ret)
+                }
+            });
+        });
         }
     );
 </script>

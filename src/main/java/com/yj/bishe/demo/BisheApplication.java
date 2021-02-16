@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableScheduling
 @EnableTransactionManagement
-@MapperScan(basePackages = "com.yj.bishe.demo.dao")
+//@MapperScan(basePackages = "com.yj.bishe.demo.dao")
 @ComponentScan(basePackages = "com.yj.bishe")
 public class BisheApplication {
 
