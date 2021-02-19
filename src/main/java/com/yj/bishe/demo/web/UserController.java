@@ -19,13 +19,19 @@ import java.util.Map;
  * @since 2021-02-14
  */
 @Controller
-//@RequestMapping("//user")
+//@RequestMapping("/users")
 public class UserController {
 
-    @RequestMapping("/hello")
+    @RequestMapping("/users/index")
     public String helloHtml(Map<String,Object> map){
         map.put("hello","欢迎进入HTML页面");
-        return "/index";
+        return "index";
+    }
+
+    @RequestMapping("/index")
+    public String indexHtml(Map<String,Object> map){
+        map.put("hello","欢迎进入HTML页面");
+        return "index";
     }
 
     @PostMapping("/testajax")

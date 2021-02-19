@@ -2,6 +2,9 @@ package com.yj.bishe.demo.dao;
 
 import com.yj.bishe.demo.entity.Listings;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 /**
  * <p>
@@ -11,6 +14,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author demo
  * @since 2021-02-14
  */
+@Mapper
+@Repository
 public interface ListingsMapper extends BaseMapper<Listings> {
+
+    //房源多图片上传
+    public int UpdateImgByLid(@Param("lid")int lid, @Param("limg")String ling);
 
 }
