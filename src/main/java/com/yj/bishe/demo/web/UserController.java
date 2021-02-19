@@ -1,13 +1,16 @@
 package com.yj.bishe.demo.web;
 
 
+import com.yj.bishe.demo.entity.User;
+import com.yj.bishe.demo.service.IUserService;
 import com.yj.bishe.demo.vo.JsonResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -19,17 +22,31 @@ import java.util.Map;
  * @since 2021-02-14
  */
 @Controller
-//@RequestMapping("/users")
 public class UserController {
 
-    @RequestMapping("/users/index")
-    public String helloHtml(Map<String,Object> map){
+    @Autowired
+    IUserService userService;
+
+    @RequestMapping("/index")//进入主页
+    public String indexHtml(Map<String,Object> map){
         map.put("hello","欢迎进入HTML页面");
         return "index";
     }
 
-    @RequestMapping("/index")
-    public String indexHtml(Map<String,Object> map){
+    @PostMapping("/registered")//注册
+    @ResponseBody
+    public JsonResult userRegistered(User user){
+        return userService.userRegistered(user);
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public JsonResult userLogin(Integer up, String pass, HttpSession session){
+        return userService.userLogin(up,pass,session);
+    }
+
+    @RequestMapping("/users/index")
+    public String helloHtml(Map<String,Object> map){
         map.put("hello","欢迎进入HTML页面");
         return "index";
     }

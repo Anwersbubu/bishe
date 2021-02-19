@@ -14,10 +14,32 @@
 
 <body>
 <div id="header"></div>
+<div>
+    电话号码:<input id="uphone" type="number" value="175****3562" />
+    密码:<input id="upass" type="password" value="11111111" />
+    <button id="bbtn">登陆</button>
+</div>
 <script>
     $(function (){
         $.getScript("../static/bootstrap/js/bootstrap.min.js");
         $("#header").load("../static/head.html");
+        $("#bbtn").click(function (){
+            var uphone = $("#uphone").val();
+            var upass = $("#upass").val();
+           $.ajax({
+               url:"/login",
+               type:"post",
+               data:{"up":uphone,"pass":upass},
+               xhrFields:{
+                   withCredentials:true//允许跨域带cookie
+               },
+               success:function (ret){
+                   if (ret.success){
+                       sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
+                   }
+               }
+           });
+        });
     })
 </script>
 </body>

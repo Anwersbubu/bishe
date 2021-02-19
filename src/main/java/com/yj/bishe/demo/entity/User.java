@@ -16,19 +16,22 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 姓名
-     */
+
     @TableId(value = "uid", type = IdType.AUTO)
     private Integer uid;
 
     /**
-     * 性别：男/女
+     * 姓名
      */
     private String uname;
 
     /**
      * 电话号码：175****3562
+     */
+    private Integer uphone;
+
+    /**
+     * 性别：男/女
      */
     private String usex;
 
@@ -71,6 +74,15 @@ public class User implements Serializable {
     public void setUname(String uname) {
         this.uname = uname;
     }
+
+    public Integer getUphone() {
+        return uphone;
+    }
+
+    public void setUphone(Integer uphone) {
+        this.uphone = uphone;
+    }
+
     public String getUsex() {
         return usex;
     }

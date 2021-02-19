@@ -17,4 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserMapper extends BaseMapper<User> {
 
+    //加密密码
+    public String MdPassword(String upassword);
+
 }

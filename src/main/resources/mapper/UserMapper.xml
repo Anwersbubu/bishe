@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yj.bishe.demo.dao.UserMapper">
 
+    <select id="MdPassword" resultType="String">
+        select MD5(#{upassword})
+    </select>
+
 </mapper>
