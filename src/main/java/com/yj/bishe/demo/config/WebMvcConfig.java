@@ -2,10 +2,11 @@ package com.yj.bishe.demo.config;
 
 import com.yj.bishe.demo.interceptor.OneInterceptor;
 import com.yj.bishe.demo.interceptor.TwoInterceptor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import javax.annotation.Resource;
 
 
 /**
@@ -17,9 +18,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer{
 
-	@Autowired
+	@Resource
 	OneInterceptor oneInterceptor;
-	@Autowired
+	@Resource
 	TwoInterceptor twoInterceptor;
 	
 	@Override

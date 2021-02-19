@@ -17,9 +17,9 @@ import javax.servlet.http.HttpSession;
 public interface IUserService extends IService<User> {
 
     //注册
-    public JsonResult userRegistered(User user);
+    JsonResult userRegistered(User user);
 
     //登陆
-    public JsonResult userLogin(Integer uphone, String upassword, HttpSession session);
+    JsonResult userLogin(Integer uphone, String upassword, HttpSession session);
 
 }

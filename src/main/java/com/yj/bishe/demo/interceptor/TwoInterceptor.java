@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.yj.bishe.demo.entity.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -25,7 +24,6 @@ public class TwoInterceptor implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		User user = (User)session.getAttribute("usersession");
 		if(user!=null) {
-			Integer uid = user.getUid();
 			Integer ushenf = user.getUshenf();
 			if(ushenf == 1) {
 				return true;

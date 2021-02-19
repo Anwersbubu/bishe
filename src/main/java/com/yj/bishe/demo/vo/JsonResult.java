@@ -11,7 +11,7 @@ public class JsonResult {
 
 	boolean success;
 	String message;
-	HashMap<String,Object> data = new HashMap<String,Object>();
+	HashMap<String,Object> data = new HashMap<>();
 	
 	
 	

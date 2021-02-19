@@ -4,12 +4,11 @@ package com.yj.bishe.demo.web;
 import com.yj.bishe.demo.entity.User;
 import com.yj.bishe.demo.service.IUserService;
 import com.yj.bishe.demo.vo.JsonResult;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-    @Autowired
+    @Resource
     IUserService userService;
 
     @RequestMapping("/index")//进入主页
