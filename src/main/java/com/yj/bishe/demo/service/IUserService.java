@@ -25,4 +25,10 @@ public interface IUserService extends IService<User> {
     //更新用户信息
     JsonResult userUpdateinfo(User user);
 
+    //管理员更新用户信息
+    JsonResult adminUpdateUser(User user);
+
+    //通过uid或uphone查询用户信息
+    JsonResult queryUserByUid2phone(int uin2phone);
+
 }

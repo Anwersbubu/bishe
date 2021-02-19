@@ -64,6 +64,18 @@ public class UserController {
         return ret;
     }
 
+    @PostMapping("/admin/update")//管理员更新用户信息
+    @ResponseBody
+    public JsonResult adminUpdateUser(User user){
+        return userService.adminUpdateUser(user);
+    }
+
+    @PostMapping("/admin/queryuser")//管理员通过uid或uphone查询用户信息
+    @ResponseBody
+    public JsonResult adminQueryUserByUid2uphone(int uid2phone){
+        return userService.queryUserByUid2phone(uid2phone);
+    }
+
     @RequestMapping("/users/index")
     public String helloHtml(Map<String,Object> map){
         map.put("hello","欢迎进入HTML页面");

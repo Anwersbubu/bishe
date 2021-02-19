@@ -66,12 +66,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         int i = userMapper.updateById(user);
         if (i == 1){
             ret = new JsonResult(true,"用户更新个人信息成功");
-            QueryWrapper<User> wrapper = new QueryWrapper<>();
-            wrapper.eq("uid", user.getUid());
-            User selectOne = userMapper.selectOne(wrapper);
-            ret.setData("user",selectOne);
+//            QueryWrapper<User> wrapper = new QueryWrapper<>();
+//            wrapper.eq("uid", user.getUid());
+//            User selectOne = userMapper.selectOne(wrapper);
+            User selectById = userMapper.selectById(user.getUid());
+            ret.setData("user",selectById);
         }else {
             ret = new JsonResult(false,"用户更新个人信息失败");
+        }
+        return ret;
+    }
+
+    //管理员更新用户信息(除了不能修改uid、没有更新限制)
+    @Override
+    public JsonResult adminUpdateUser(User user) {
+        JsonResult ret;
+        user.setUpassword(userMapper.MdPassword(user.getUpassword()));
+        int i = userMapper.updateById(user);
+        if (i == 1){
+            ret = new JsonResult(true,"修改用户信息成功");
+            User selectById = userMapper.selectById(user.getUid());
+            ret.setData("user",selectById);
+        }else {
+            ret = new JsonResult(false,"修改用户信息失败");
+        }
+        return ret;
+    }
+
+    @Override
+    public JsonResult queryUserByUid2phone(int uin2phone) {
+        JsonResult ret;
+        User user = userMapper.queryUserByUid2phone(uin2phone);
+        if (user != null){
+            ret = new JsonResult(true,"查询到用户信息");
+            ret.setData("user",user);
+        }else {
+            ret = new JsonResult(false,"通过uid或uphone查询用户信息失败");
         }
         return ret;
     }

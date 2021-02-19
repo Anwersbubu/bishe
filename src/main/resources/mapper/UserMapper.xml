@@ -6,4 +6,8 @@
         select MD5(#{upassword})
     </select>
 
+    <select id="queryUserByUid2phone" resultType="Integer">
+        select * from user where uid = #{uid2phone} or uphone = #{uid2phone}
+    </select>
+
 </mapper>
