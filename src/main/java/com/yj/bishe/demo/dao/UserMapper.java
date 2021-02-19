@@ -1,5 +1,6 @@
 package com.yj.bishe.demo.dao;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yj.bishe.demo.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,6 @@ import org.springframework.stereotype.Repository;
 public interface UserMapper extends BaseMapper<User> {
 
     //加密密码
-    public String MdPassword(String upassword);
+    String MdPassword(String upassword);
 
 }

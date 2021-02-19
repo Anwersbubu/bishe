@@ -22,4 +22,7 @@ public interface IUserService extends IService<User> {
     //登陆
     JsonResult userLogin(Integer uphone, String upassword, HttpSession session);
 
+    //更新用户信息
+    JsonResult userUpdateinfo(User user);
+
 }

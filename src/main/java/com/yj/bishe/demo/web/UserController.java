@@ -38,24 +38,36 @@ public class UserController {
         return userService.userRegistered(user);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/login")//登陆
     @ResponseBody
     public JsonResult userLogin(Integer up, String pass, HttpSession session){
         return userService.userLogin(up,pass,session);
+    }
+
+    @PostMapping("/users/update")//更新用户个人信息
+    @ResponseBody
+    public JsonResult userUpdate(User user){
+        return userService.userUpdateinfo(user);
+    }
+
+    @PostMapping("/users/query")//获取当前用户个人信息
+    @ResponseBody
+    public JsonResult queryUser(HttpSession session){
+        JsonResult ret;
+        User usersession = (User)session.getAttribute("usersession");
+        if(usersession != null){
+            ret = new JsonResult(true,"获取当前用户信息成功");
+            ret.setData("user",usersession);
+        }else {
+            ret = new JsonResult(false,"获取当前用户信息失败");
+        }
+        return ret;
     }
 
     @RequestMapping("/users/index")
     public String helloHtml(Map<String,Object> map){
         map.put("hello","欢迎进入HTML页面");
         return "index";
-    }
-
-    @PostMapping("/testajax")
-    @ResponseBody
-    public JsonResult testAjax(String test){
-        JsonResult json = new JsonResult(false,"OK");
-        json.setData("date",test);
-        return json;
     }
 
 }
