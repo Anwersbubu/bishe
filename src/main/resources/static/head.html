@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title></title>
-    <!-- Bootstrap core CSS -->
-    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../static/js/jquery.min.js"></script>
-    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+<!--    不能移出去，不然bootstrap的js效果就没有了-->
+    <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body>
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
+    <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -20,37 +18,34 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">
-                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
+            <a class="navbar-brand" href="http://localhost:8080/index">
+                <span class="glyphicon glyphicon-home" aria-hidden="true">房屋网</span>
             </a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">Link</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
+                <li><a href="http://localhost:8080/address"><span class="glyphicon glyphicon-map-marker" aria-hidden="true">中国</span><span class="sr-only">(current)</span></a></li>
             </ul>
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
+
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Link</a></li>
+                <li>
+                    <form class="navbar-form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                    </form>
+                </li>
+                <li><a href="javascript:;" onclick="goTozufang()">租房</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我是业主 <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">发布房源</a></li>
+                        <li role="separator" class="divider"></li>
+                    </ul>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -62,8 +57,78 @@
                     </ul>
                 </li>
             </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
+        </div>
+    </div>
 </nav>
+<script type="text/javascript">
+    $(function (){
+    var map = new AMap.Map('container', {
+        resizeEnable: true
+    });
+    AMap.plugin('AMap.Geolocation', function() {
+        var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：5s
+            buttonPosition:'RB',    //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition(function(status,result){
+            if(status=='complete'){
+                onComplete(result)
+            }else{
+                onError(result)
+            }
+        });
+    });
+    //解析定位结果
+    function onComplete(data) {
+        //定位成功结果经纬度
+        let addr = data.position.lng+","+data.position.lat;
+        $.ajax({
+            url:"/getaddress",
+            type:"post",
+            data:{"URL":"https://restapi.amap.com/v3/geocode/regeo","param":addr},
+            success:function(ret){
+                console.log(ret);
+                let count = ret.regeocode.addressComponent.country;//国家
+                let prov = ret.regeocode.addressComponent.province;//省
+                let ct = ret.regeocode.addressComponent.city;//市
+                let dist = ret.regeocode.addressComponent.district;//区
+                let town = ret.regeocode.addressComponent.township;//街道
+                let stree = ret.regeocode.addressComponent.streetNumber.street;//路
+                let num = ret.regeocode.addressComponent.streetNumber.number;//门牌号
+                $(".glyphicon-map-marker").text(ct);//动态设置定位显示
+            }
+        });
+    }
+    //解析定位错误信息
+    function onError(data) {
+        alert('定位失败,原因是:'+data.message);
+    }
+
+    //租房a标签的点击事件
+    function  goTozufang(){
+        window.location.href = "http://localhost:8080/zufang?address="+$(".glyphicon-map-marker").text();
+    }
+    });
+</script>
+<!--<script type="text/javascript">-->
+<!--    //高德webAPI通过IP定位到市级，然后动态修改导航栏的当前城市-->
+<!--    var ip = returnCitySN["cip"];-->
+<!--    $.ajax({-->
+<!--        url:"https://restapi.amap.com/v3/ip",-->
+<!--        type:"get",-->
+<!--        data:{"key":"36a678df773856fff019cc42ebfc80c0","ip":ip},-->
+<!--        success:function (ret){-->
+<!--            var addre = ret.city;-->
+<!--            $(".glyphicon-map-marker").text(addre);-->
+<!--            // console.log(ret)-->
+<!--        }-->
+<!--    });-->
+<!--    // console.log(returnCitySN["cip"]+','+returnCitySN["cname"])-->
+<!--</script>-->
 </body>
 </html>
