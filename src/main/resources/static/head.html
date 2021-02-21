@@ -2,17 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
-<!--    不能移出去，不然bootstrap的js效果就没有了-->
+    <!--    不能移出去，不然bootstrap的js效果就没有了-->
     <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <style>
+        .mynavback{
+            /*背景透明*/
+            background-color:transparent;
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-default">
+<nav class="mynavback navbar navbar-default">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -26,96 +33,134 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="http://localhost:8080/address"><span class="glyphicon glyphicon-map-marker" aria-hidden="true">中国</span><span class="sr-only">(current)</span></a></li>
+                <li><a href="http://localhost:8080/address"><span class="glyphicon glyphicon-map-marker"
+                                                                  aria-hidden="true">中国</span><span class="sr-only">(current)</span></a>
+                </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <form class="navbar-form">
+                    <div class="navbar-form">
                         <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="hidden" name="city" value="全国">
+                            <input type="text" class="form-control" name="keywords" placeholder="只可搜索到当前地区的房屋信息">
                         </div>
-                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-                    </form>
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"
+                                                                            aria-hidden="true"></span></button>
+                    </div>
                 </li>
                 <li><a href="javascript:;" id="zufang">租房</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我是业主 <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">我是业主 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">发布房源</a></li>
                         <li role="separator" class="divider"></li>
                     </ul>
                 </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </li>
+                <script>
+                    let item;
+                    let pares;
+                    item = sessionStorage.getItem("usersession");
+                    if (item != null){
+                        pares = JSON.parse(item);
+                        let li = "<li><a href='http://localhost:8080/gerenzx'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>欢迎: "+pares.uname+"</a> </li>";
+                        $(".navbar-right").append(li);
+                    }else{
+                        let li = "<li><a href='http://localhost:8080/dlzc'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>登陆 / 注册</a> </li>";
+                        $(".navbar-right").append(li);
+                    }
+                </script>
             </ul>
         </div>
     </div>
 </nav>
 <script type="text/javascript">
+
     var map = new AMap.Map('container', {
         resizeEnable: true
     });
-    AMap.plugin('AMap.Geolocation', function() {
+    AMap.plugin('AMap.Geolocation', function () {
         var geolocation = new AMap.Geolocation({
             enableHighAccuracy: true,//是否使用高精度定位，默认:true
             timeout: 10000,          //超过10秒后停止定位，默认：5s
-            buttonPosition:'RB',    //定位按钮的停靠位置
+            buttonPosition: 'RB',    //定位按钮的停靠位置
             buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
             zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
 
         });
         map.addControl(geolocation);
-        geolocation.getCurrentPosition(function(status,result){
-            if(status=='complete'){
+        geolocation.getCurrentPosition(function (status, result) {
+            if (status == 'complete') {
                 onComplete(result)
-            }else{
+            } else {
                 onError(result)
             }
         });
     });
+    let addr, count, prov, ct, dist, town, stree, num;
+
     //解析定位结果
     function onComplete(data) {
         //定位成功结果经纬度
-        let addr = data.position.lng+","+data.position.lat;
+        addr = data.position.lng + "," + data.position.lat;
         $.ajax({
-            url:"/getaddress",
-            type:"post",
-            data:{"URL":"https://restapi.amap.com/v3/geocode/regeo","param":addr},
-            success:function(ret){
-                console.log(ret);
-                let count = ret.regeocode.addressComponent.country;//国家
-                let prov = ret.regeocode.addressComponent.province;//省
-                let ct = ret.regeocode.addressComponent.city;//市
-                let dist = ret.regeocode.addressComponent.district;//区
-                let town = ret.regeocode.addressComponent.township;//街道
-                let stree = ret.regeocode.addressComponent.streetNumber.street;//路
-                let num = ret.regeocode.addressComponent.streetNumber.number;//门牌号
-                $(".glyphicon-map-marker").text(ct);//动态设置定位显示
+            url: "/getaddress",
+            type: "post",
+            data: {"param": addr},
+            success: function (ret) {
+                if (ret.status == 1) {
+                    console.log(ret.regeocode.formatted_address);
+                    count = ret.regeocode.addressComponent.country;//国家
+                    prov = ret.regeocode.addressComponent.province;//省
+                    ct = ret.regeocode.addressComponent.city;//市
+                    dist = ret.regeocode.addressComponent.district;//区
+                    town = ret.regeocode.addressComponent.township;//街道
+                    stree = ret.regeocode.addressComponent.streetNumber.street;//路
+                    num = ret.regeocode.addressComponent.streetNumber.number;//门牌号
+                    $(".glyphicon-map-marker").text(ct);//动态设置定位显示
+                    $(".form-group").find("input").eq(0).val(ct);//搜索框带的市级信息
+                }
             }
         });
     }
+
     //解析定位错误信息
     function onError(data) {
-        alert('定位失败,原因是:'+data.message);
+        alert('定位失败,原因是:' + data.message);
     }
 
-    $("#zufang").click(function (){
-        window.location.href = "http://localhost:8080/zufang?address="+$(".glyphicon-map-marker").text();
+    //关键字查询
+    $(".navbar-form").find("button").click(function () {
+        $.ajax({
+            url: "/search",
+            type: "get",
+            data: {"city": ct, "keywords": $(".form-group").find("input").eq(1).val()},
+            success: function (ret) {
+                if (ret.success) {
+                    localStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
+                    window.location.href = "http://localhost:8080/listings";
+                } else
+                    alert(ret.message);
+            }
+        });
     });
 
-    //租房a标签的点击事件
-    function  goTozufang(){
-        window.location.href = "http://localhost:8080/zufang?address="+$(".glyphicon-map-marker").text();
-    }
+    //租房链接
+    $("#zufang").click(function () {
+        $.ajax({
+            url: "/zufang",
+            type: "post",
+            data: {"city": ct, "street": stree},
+            success: function (ret) {
+                if (ret.success) {
+                    localStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
+                    window.location.href = "http://localhost:8080/listings";
+                } else
+                    alert(ret.message);
+            }
+        });
+    });
 </script>
 <!--<script type="text/javascript">-->
 <!--    //高德webAPI通过IP定位到市级，然后动态修改导航栏的当前城市-->

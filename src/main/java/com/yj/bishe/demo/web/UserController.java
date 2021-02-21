@@ -27,9 +27,18 @@ public class UserController {
     IUserService userService;
 
     @RequestMapping("/index")//进入主页
-    public String indexHtml(Map<String,Object> map){
-        map.put("hello","欢迎进入HTML页面");
+    public String indexHtml(){
         return "index";
+    }
+
+    @RequestMapping("/dlzc")//进入登陆/注册页
+    public String zhuceHtml(){
+        return "dlzc";
+    }
+
+    @RequestMapping("/gerenzx")//进入个人中心页
+    public String gerenzxHtml(){
+        return "gerenzx";
     }
 
     @PostMapping("/registered")//注册

@@ -47,25 +47,6 @@ public class Address implements Serializable {
      */
     private String street;
 
-    /**
-     * 乡村
-     */
-    private String rural;
-
-    /**
-     * 门牌号
-     */
-    private String hnum;
-
-    /**
-     * 经度
-     */
-    private String jingdu;
-
-    /**
-     * 纬度
-     */
-    private String weidu;
 
     public Integer getAid() {
         return aid;
@@ -109,34 +90,6 @@ public class Address implements Serializable {
     public void setStreet(String street) {
         this.street = street;
     }
-    public String getRural() {
-        return rural;
-    }
-
-    public void setRural(String rural) {
-        this.rural = rural;
-    }
-    public String getHnum() {
-        return hnum;
-    }
-
-    public void setHnum(String hnum) {
-        this.hnum = hnum;
-    }
-    public String getJingdu() {
-        return jingdu;
-    }
-
-    public void setJingdu(String jingdu) {
-        this.jingdu = jingdu;
-    }
-    public String getWeidu() {
-        return weidu;
-    }
-
-    public void setWeidu(String weidu) {
-        this.weidu = weidu;
-    }
 
     @Override
     public String toString() {
@@ -147,10 +100,6 @@ public class Address implements Serializable {
         ", city=" + city +
         ", area=" + area +
         ", street=" + street +
-        ", rural=" + rural +
-        ", hnum=" + hnum +
-        ", jingdu=" + jingdu +
-        ", weidu=" + weidu +
         "}";
     }
 }
