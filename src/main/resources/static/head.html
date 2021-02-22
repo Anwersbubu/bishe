@@ -6,10 +6,15 @@
     <title></title>
     <!--    不能移出去，不然bootstrap的js效果就没有了-->
     <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../static/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
     <style>
         .mynavback{
             /*背景透明*/
             background-color:transparent;
+        }
+        /*登陆注册按钮边框消除*/
+        .bord{
+            border: 0;
         }
     </style>
 </head>
@@ -67,8 +72,33 @@
                         let li = "<li><a href='http://localhost:8080/gerenzx'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>欢迎: "+pares.uname+"</a> </li>";
                         $(".navbar-right").append(li);
                     }else{
-                        let li = "<li><a href='http://localhost:8080/dlzc'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>登陆 / 注册</a> </li>";
+                        let li = "<li><a href='javascript:;' class='bord layui-btn layui-btn-primary'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>登陆 / 注册</a> </li>";
                         $(".navbar-right").append(li);
+                        $(".bord").click(function (){
+                        //弹出效果
+                        layui.use('layer', function() { //独立版的layer无需执行这一句
+                            var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+                            layer.tab({
+                                type: 2,
+                                area: ['600px', '300px'],
+                                tab: [{
+                                    type: 2,
+                                    title: '登录',
+                                    shadeClose: true,
+                                    shade: 0.8,
+                                    area: ['380px', '90%'],
+                                    content: './denglu.html' //iframe的url
+                                }, {
+                                    type: 2,
+                                    title: '注册',
+                                    shadeClose: true,
+                                    shade: 0.8,
+                                    area: ['380px', '90%'],
+                                    content: './zhuce.html' //iframe的url
+                                }]
+                            });
+                        });
+                        });
                     }
                 </script>
             </ul>

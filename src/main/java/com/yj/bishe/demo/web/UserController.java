@@ -31,9 +31,14 @@ public class UserController {
         return "index";
     }
 
-    @RequestMapping("/dlzc")//进入登陆/注册页
+    @RequestMapping("/denglu")//进入登陆页
+    public String dengluHtml(){
+        return "denglu";
+    }
+
+    @RequestMapping("/zhuce")//进入登陆页
     public String zhuceHtml(){
-        return "dlzc";
+        return "zhuce";
     }
 
     @RequestMapping("/gerenzx")//进入个人中心页
