@@ -27,16 +27,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     //注册
     @Override
-    public JsonResult userRegistered(User user) {
+    public JsonResult userRegistered(User user, HttpSession session) {
         int n;
         JsonResult ret;
         user.setUpassword(userMapper.MdPassword(user.getUpassword()));
-        n = userMapper.insert(user);
-        if (n == 1){
-            ret = new JsonResult(true,"注册成功");
-            ret.setData("uname",user.getUname());
-        }else {
-            ret = new JsonResult(false,"注册失败");
+        try {
+            n = userMapper.insert(user);
+            if (n == 1){
+                ret = new JsonResult(true,"注册成功");
+                User user1 = userMapper.queryUserByUid2phone(user.getUphone());
+                ret.setData("user",user1);
+                session.setAttribute("usersession",user);
+            }else {
+                ret = new JsonResult(false,"注册失败");
+            }
+            return ret;
+        }catch (Exception e){
+            ret = new JsonResult(false,"注册失败电话号码已注册过");
         }
         return ret;
     }
@@ -54,7 +61,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             session.setAttribute("usersession",selectOne);
             ret.setData("user",selectOne);
         }else {
-            ret = new JsonResult(false,"登陆失败");
+            ret = new JsonResult(false,"电话号码或密码错误登陆失败");
         }
         return ret;
     }

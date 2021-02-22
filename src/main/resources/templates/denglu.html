@@ -3,8 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
 </head>
 <body>
-<h1>登录</h1>
+<div>
+    电话号码:<input id="uphone" type="number" placeholder="175****3562" />
+    密码:<input id="upass" type="password" placeholder="11111111" />
+    <button id="bbtn">登陆</button>
+</div>
+<script>
+    $("#bbtn").click(function (){
+        var uphone = $("#uphone").val();
+        var upass = $("#upass").val();
+        $.ajax({
+            url:"/login",
+            type:"post",
+            data:{"up":uphone,"pass":upass},
+            xhrFields:{
+                withCredentials:true//允许跨域带cookie
+            },
+            success:function (ret){
+                if (ret.success){
+                    sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
+                    window.parent.location.href = "http://localhost:8080/index";
+                }else {
+                    alert(ret.message);
+                }
+            }
+        });
+    });
+</script>
 </body>
 </html>

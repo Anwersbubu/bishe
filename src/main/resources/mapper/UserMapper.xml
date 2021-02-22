@@ -6,7 +6,7 @@
         select MD5(#{upassword})
     </select>
 
-    <select id="queryUserByUid2phone" resultType="Integer">
+    <select id="queryUserByUid2phone" resultType="com.yj.bishe.demo.entity.User">
         select * from user where uid = #{uid2phone} or uphone = #{uid2phone}
     </select>
 

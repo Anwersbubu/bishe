@@ -31,6 +31,11 @@ public class UserController {
         return "index";
     }
 
+    @RequestMapping("/dlzc")
+    public String dlzcHtml(){
+        return "dlzc";
+    }
+
     @RequestMapping("/denglu")//进入登陆页
     public String dengluHtml(){
         return "denglu";
@@ -48,8 +53,13 @@ public class UserController {
 
     @PostMapping("/registered")//注册
     @ResponseBody
-    public JsonResult userRegistered(User user){
-        return userService.userRegistered(user);
+    public JsonResult userRegistered(String uname, int uphone, String password, HttpSession session){
+        User user = new User();
+        user.setUname(uname);
+        user.setUphone(uphone);
+        user.setUpassword(password);
+        user.setUshenf(0);
+        return userService.userRegistered(user,session);
     }
 
     @PostMapping("/login")//登陆
