@@ -27,23 +27,11 @@ public class UserController {
     IUserService userService;
 
     @RequestMapping("/index")//进入主页
-    public String indexHtml(){
-        return "index";
-    }
+    public String indexHtml(){ return "index"; }
 
-    @RequestMapping("/dlzc")
+    @RequestMapping("/dlzc")//进入登录注册页
     public String dlzcHtml(){
         return "dlzc";
-    }
-
-    @RequestMapping("/denglu")//进入登陆页
-    public String dengluHtml(){
-        return "denglu";
-    }
-
-    @RequestMapping("/zhuce")//进入登陆页
-    public String zhuceHtml(){
-        return "zhuce";
     }
 
     @RequestMapping("/gerenzx")//进入个人中心页
@@ -53,7 +41,7 @@ public class UserController {
 
     @PostMapping("/registered")//注册
     @ResponseBody
-    public JsonResult userRegistered(String uname, int uphone, String password, HttpSession session){
+    public JsonResult userRegistered(String uname, String uphone, String password, HttpSession session){
         User user = new User();
         user.setUname(uname);
         user.setUphone(uphone);
@@ -64,7 +52,7 @@ public class UserController {
 
     @PostMapping("/login")//登陆
     @ResponseBody
-    public JsonResult userLogin(Integer up, String pass, HttpSession session){
+    public JsonResult userLogin(String up, String pass, HttpSession session){
         return userService.userLogin(up,pass,session);
     }
 
@@ -96,7 +84,7 @@ public class UserController {
 
     @PostMapping("/admin/queryuser")//管理员通过uid或uphone查询用户信息
     @ResponseBody
-    public JsonResult adminQueryUserByUid2uphone(int uid2phone){
+    public JsonResult adminQueryUserByUid2uphone(String uid2phone){
         return userService.queryUserByUid2phone(uid2phone);
     }
 

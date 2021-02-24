@@ -1,0 +1,13 @@
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #2D2D2D;
+	height: 90vh;
+}
+
+.swiper-item > img{
+    width: inherit;
+    height: inherit;
+    object-fit: cover;
+}

@@ -28,7 +28,7 @@ public class User implements Serializable {
     /**
      * 电话号码：175****3562
      */
-    private Integer uphone;
+    private String uphone;
 
     /**
      * 性别：男/女
@@ -75,11 +75,11 @@ public class User implements Serializable {
         this.uname = uname;
     }
 
-    public Integer getUphone() {
+    public String getUphone() {
         return uphone;
     }
 
-    public void setUphone(Integer uphone) {
+    public void setUphone(String uphone) {
         this.uphone = uphone;
     }
 

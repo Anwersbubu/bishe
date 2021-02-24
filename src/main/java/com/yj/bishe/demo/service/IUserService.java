@@ -20,7 +20,7 @@ public interface IUserService extends IService<User> {
     JsonResult userRegistered(User user, HttpSession session);
 
     //登陆
-    JsonResult userLogin(Integer uphone, String upassword, HttpSession session);
+    JsonResult userLogin(String uphone, String upassword, HttpSession session);
 
     //更新用户信息
     JsonResult userUpdateinfo(User user);
@@ -29,6 +29,6 @@ public interface IUserService extends IService<User> {
     JsonResult adminUpdateUser(User user);
 
     //通过uid或uphone查询用户信息
-    JsonResult queryUserByUid2phone(int uin2phone);
+    JsonResult queryUserByUid2phone(String uin2phone);
 
 }

@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             n = userMapper.insert(user);
             if (n == 1){
                 ret = new JsonResult(true,"注册成功");
-                User user1 = userMapper.queryUserByUid2phone(user.getUphone());
+                User user1 = userMapper.queryUserByUphone(user.getUphone());
                 ret.setData("user",user1);
                 session.setAttribute("usersession",user);
             }else {
@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     //登陆(电话号码+密码)
     @Override
-    public JsonResult userLogin(Integer uphone, String upassword, HttpSession session) {
+    public JsonResult userLogin(String uphone, String upassword, HttpSession session) {
         JsonResult ret;
         QueryWrapper<User> wrapper = new QueryWrapper<>();
         wrapper.eq("uphone",uphone);
@@ -73,9 +73,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         int i = userMapper.updateById(user);
         if (i == 1){
             ret = new JsonResult(true,"用户更新个人信息成功");
-//            QueryWrapper<User> wrapper = new QueryWrapper<>();
-//            wrapper.eq("uid", user.getUid());
-//            User selectOne = userMapper.selectOne(wrapper);
             User selectById = userMapper.selectById(user.getUid());
             ret.setData("user",selectById);
         }else {
@@ -101,9 +98,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     }
 
     @Override
-    public JsonResult queryUserByUid2phone(int uin2phone) {
+    public JsonResult queryUserByUid2phone(String uphone) {
         JsonResult ret;
-        User user = userMapper.queryUserByUid2phone(uin2phone);
+        User user = userMapper.queryUserByUphone(uphone);
         if (user != null){
             ret = new JsonResult(true,"查询到用户信息");
             ret.setData("user",user);

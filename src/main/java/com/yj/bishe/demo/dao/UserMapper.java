@@ -21,7 +21,7 @@ public interface UserMapper extends BaseMapper<User> {
     //加密密码
     String MdPassword(String upassword);
 
-    //通过uid或uphone查询用户信息
-    User queryUserByUid2phone(int uid2phone);
+    //通过uphone查询用户信息
+    User queryUserByUphone(String uid2phone);
 
 }

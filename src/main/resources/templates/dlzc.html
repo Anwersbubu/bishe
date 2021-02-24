@@ -47,7 +47,7 @@
                                         <div class="section text-center">
                                             <h4 class="mb-4 pb-3">注册</h4>
                                             <div class="form-group">
-                                                <input type="text" name="logname" class="form-style" placeholder="请输入用户名" id="loginname" autocomplete="off">
+                                                <input type="text" name="logname" class="form-style" placeholder="请输入中文用户名" id="loginname" autocomplete="off" >
                                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                             </div>
                                             <div class="form-group mt-2">
@@ -55,7 +55,11 @@
                                                 <i class="fa fa-phone" aria-hidden="true"></i>
                                             </div>
                                             <div class="form-group mt-2">
-                                                <input type="password" name="logpass" class="form-style" placeholder="请输入密码" id="zlogingpass" autocomplete="off">
+                                                <input type="password" name="logpass" class="form-style" placeholder="请输入密码由英文开头、数字或下划线组成的6-18位字符" id="zlogingpass" autocomplete="off">
+                                                <i class="fa fa-unlock-alt" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="form-group mt-2">
+                                                <input type="password" name="relogpass" class="form-style" placeholder="确认密码" id="zlogingpass2" autocomplete="off">
                                                 <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                                             </div>
                                             <a href="javascript:" class="btn mt-4 zbtn">注册</a>
@@ -80,46 +84,92 @@ $(function (){
     $(".dbtn").click(function (){
         var uphone = $("#dloginphone").val();
         var upass = $("#dloginpass").val();
-        $.ajax({
-            url:"/login",
-            type:"post",
-            data:{"up":uphone,"pass":upass},
-            xhrFields:{
-                withCredentials:true//允许跨域带cookie
-            },
-            success:function (ret){
-                if (ret.success){
-                    sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
-                    window.parent.location.href = "http://localhost:8080/index";
-                }else {
-                    alert(ret.message);
+        //验证表单格式
+        if (checkLogin(uphone,upass)) {
+            $.ajax({
+                url: "/login",
+                type: "post",
+                data: {"up": uphone, "pass": upass},
+                xhrFields: {
+                    withCredentials: true//允许跨域带cookie
+                },
+                success: function (ret) {
+                    if (ret.success) {
+                        sessionStorage.setItem("usersession", JSON.stringify(ret.data.user));
+                        window.parent.location.href = "http://localhost:8080/index";
+                    } else {
+                        alert(ret.message);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 
     //注册
     $(".zbtn").click(function (){
-        var uname = $("#loginname").val();
-        var uphone = $("#zloginephone").val();
-        var upass = $("#zlogingpass").val();
-        $.ajax({
-            url:"/registered",
-            type:"post",
-            data:{"uname":uname,"uphone":uphone,"password":upass},
-            xhrFields:{
-                withCredentials:true//允许跨域带cookie
-            },
-            success:function (ret){
-                if (ret.success){
-                    sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
-                    window.parent.location.href = "http://localhost:8080/index";
-                }else {
-                    alert(ret.message);
+        let uname = $("#loginname").val();
+        let uphone = $("#zloginephone").val();
+        let upass = $("#zlogingpass").val();
+        let repass = $("#zlogingpass2").val();
+        //验证表单格式
+        let check = checkreGistered(uname,uphone,upass,repass);
+        if (check) {
+            $.ajax({
+                url:"/registered",
+                type:"post",
+                data:{"uname":uname,"uphone":uphone,"password":upass},
+                xhrFields:{
+                    withCredentials:true//允许跨域带cookie
+                },
+                success:function (ret){
+                    if (ret.success){
+                        sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
+                        window.parent.location.href = "http://localhost:8080/index";
+                    }else {
+                        alert(ret.message);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
+
+    //登录验证电话号码、密码
+    function checkLogin(phone,pass){
+        let regPhone = /0?(13|14|15|17|18)[0-9]{9}/;
+        let regPass = /^(\w){6,18}$/;
+        if (!regPhone.test(phone)){
+            alert("手机号码格式不正确，请重新输入");
+            return false;
+        }else if (!regPass.test(pass)){
+            alert("密码格式不正确");
+            return false
+        }else {
+            return true;
+        }
+    }
+
+    //注册验证用户名、电话号码、密码、确认密码
+    function checkreGistered(name,phone,pass,repass){
+        let regName = /[\u4e00-\u9fa5]/;
+        let regPhone = /0?(13|14|15|17|18)[0-9]{9}/;
+        let regPass = /^(\w){6,18}$/;
+        if(!regName.test(name)){
+            alert("用户名必须全为汉字");
+            return false;
+        }else if(!regPhone.test(phone)){
+           alert("手机号码格式不正确，请重新输入");
+           return false;
+       }else if (!regPass.test(pass)){
+            alert("密码格式不正确");
+            return false;
+        }else if (repass === pass){
+            return true;
+        }else {
+            alert(repass+"两次密码不一样"+pass);
+            return false
+        }
+    }
+
 });
 </script>
 </html>
