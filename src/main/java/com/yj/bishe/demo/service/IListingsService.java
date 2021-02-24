@@ -19,4 +19,7 @@ public interface IListingsService extends IService<Listings> {
     //关键字查询
     JsonResult searchListingsByAid(int aid);
 
+    //推荐房源
+    JsonResult recommedListingsByAddress(String city, String street);
+
 }

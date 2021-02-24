@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yj.bishe.demo.dao.FavoMapper">
 
+    <select id="recommed7Lid" parameterType="String" resultType="Integer">
+        SELECT favo.lid FROM `favo` WHERE favo.aid = (SELECT address.aid FROM `address` WHERE address.city = #{city} AND address.street = #{street}) GROUP BY favo.lid ORDER BY COUNT(*) DESC LIMIT 0,7
+    </select>
+
 </mapper>

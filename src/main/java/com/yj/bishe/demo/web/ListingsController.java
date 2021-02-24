@@ -1,12 +1,8 @@
 package com.yj.bishe.demo.web;
 
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.yj.bishe.demo.service.IListingsService;
-import com.yj.bishe.demo.util.GaoDeApi;
 import com.yj.bishe.demo.vo.JsonResult;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
@@ -27,13 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ListingsController {
 
-    //高德地图web调用的密钥
-    final String key = "36a678df773856fff019cc42ebfc80c0";
-
     @Resource
     IListingsService listingsService;
 
-    @RequestMapping("/listings")
+    @RequestMapping("/listings")//进入房源页
     public String listLings(){
         return "listings";
     }
@@ -44,6 +36,15 @@ public class ListingsController {
     @ResponseBody
     public JsonResult searchByKey(int key){
         return listingsService.searchListingsByAid(key);
+    }
+
+    //房源推荐:先通过前端传过来的地址信息在地址表找出对应的aid然后通过aid在收藏表里筛选出aid下的前7个房源
+    @PostMapping("/recommed")
+    @ResponseBody
+    public JsonResult recommedListings(String city, String street){
+        //通过城市和街道访问地址查询接口在地址表里得到aid，再用aid在收藏表里进行条件分类查询得到降序的uid集合，
+        // 取前七个，查询出房源信息用Map包装成JSON数据传给前端
+        return listingsService.recommedListingsByAddress(city, street);
     }
 
 }

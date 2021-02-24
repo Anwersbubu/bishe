@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -19,6 +21,6 @@ import org.springframework.stereotype.Repository;
 public interface ListingsMapper extends BaseMapper<Listings> {
 
     //房源多图片上传
-    public int UpdateImgByLid(@Param("lid")int lid, @Param("limg")String ling);
+    int UpdateImgByLid(@Param("lid") int lid, @Param("limg") String ling);
 
 }

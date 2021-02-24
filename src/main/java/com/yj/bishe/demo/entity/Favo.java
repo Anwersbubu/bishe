@@ -32,6 +32,11 @@ public class Favo implements Serializable {
      */
     private Integer lid;
 
+    /**
+     * 房源所在地区ID
+     */
+    private Integer aid;
+
     public Integer getFid() {
         return fid;
     }
@@ -54,12 +59,21 @@ public class Favo implements Serializable {
         this.lid = lid;
     }
 
+    public Integer getAid() {
+        return aid;
+    }
+
+    public void setAid(Integer aid) {
+        this.aid = aid;
+    }
+
     @Override
     public String toString() {
         return "Favo{" +
-        "fid=" + fid +
-        ", uid=" + uid +
-        ", lid=" + lid +
-        "}";
+                "fid=" + fid +
+                ", uid=" + uid +
+                ", lid=" + lid +
+                ", aid=" + aid +
+                '}';
     }
 }
