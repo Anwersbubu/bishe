@@ -11,6 +11,7 @@
         .mynavback {
             /*背景透明*/
             background-color: transparent;
+            margin: 0;
         }
 
         /*登陆注册按钮边框消除*/
@@ -143,6 +144,8 @@
                     town = ret.regeocode.addressComponent.township;//街道
                     stree = ret.regeocode.addressComponent.streetNumber.street;//路
                     num = ret.regeocode.addressComponent.streetNumber.number;//门牌号
+                    sessionStorage.setItem("city",ct);
+                    sessionStorage.setItem("town",town);
                     $(".glyphicon-map-marker").text(ct);//动态设置定位显示
                     $(".form-group").find("input").eq(0).val(ct);//搜索框带的市级信息
                 }

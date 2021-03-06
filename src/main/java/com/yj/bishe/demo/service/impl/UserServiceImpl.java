@@ -36,6 +36,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             if (n == 1){
                 ret = new JsonResult(true,"注册成功");
                 User user1 = userMapper.queryUserByUphone(user.getUphone());
+                user1.setUpassword("保密");
                 ret.setData("user",user1);
                 session.setAttribute("usersession",user);
             }else {
@@ -57,6 +58,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         wrapper.eq("upassword", userMapper.MdPassword(upassword));
         User selectOne = userMapper.selectOne(wrapper);
         if (selectOne != null){
+            selectOne.setUpassword("保密");
             ret = new JsonResult(true,"登陆成功");
             session.setAttribute("usersession",selectOne);
             ret.setData("user",selectOne);

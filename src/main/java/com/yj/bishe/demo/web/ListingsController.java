@@ -41,10 +41,16 @@ public class ListingsController {
     //房源推荐:先通过前端传过来的地址信息在地址表找出对应的aid然后通过aid在收藏表里筛选出aid下的前7个房源
     @PostMapping("/recommed")
     @ResponseBody
-    public JsonResult recommedListings(String city, String street){
+    public JsonResult recommedListings(String city, String town){
         //通过城市和街道访问地址查询接口在地址表里得到aid，再用aid在收藏表里进行条件分类查询得到降序的uid集合，
         // 取前七个，查询出房源信息用Map包装成JSON数据传给前端
-        return listingsService.recommedListingsByAddress(city, street);
+        return listingsService.recommedListingsByAddress(city, town);
+    }
+
+    //首页房源列表显示
+    public JsonResult indexListings(){
+
+        return null;
     }
 
 }
