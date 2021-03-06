@@ -18,6 +18,13 @@
 
 <body>
 <header id="header"></header>
+<script>
+    //公共头部加载
+    $.getScript("../static/js/jquery.min.js");
+    $.getScript("../static/layui/layui.all.js");
+    $.getScript("../static/bootstrap/js/bootstrap.min.js");
+    $("#header").load("../static/head.html");
+</script>
 <div id="banner">
     <div class="pic">
         <ul>
@@ -44,14 +51,9 @@
 </body>
 <script>
     $(function () {
-        //公共头部加载
-        $.getScript("../static/js/jquery.min.js");
-        $.getScript("../static/layui/layui.all.js");
-        $.getScript("../static/bootstrap/js/bootstrap.min.js");
-        $("#header").load("../static/head.html");
         //动态添加推荐房源卡片
-        let ct = sessionStorage.getItem("city");
-        let town = sessionStorage.getItem("town");
+        // let ct = sessionStorage.getItem("city");
+        // let town = sessionStorage.getItem("town");
         $.ajax({
             url:"/recommed",
             type:"post",
