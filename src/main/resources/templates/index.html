@@ -3,43 +3,40 @@
 <head>
     <meta charset="utf-8">
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <title>首页</title>
     <!-- Bootstrap core CSS -->
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
     <link href="../static/css/bannercss.css" rel="stylesheet">
     <script src="../static/js/jquery.min.js" type="text/javascript"></script>
-    <script src="../static/layui/layui.all.js" type="text/javascript" charset="utf-8"></script>
+    <script charset="utf-8" src="../static/layui/layui.all.js" type="text/javascript"></script>
     <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
+            type="text/javascript"></script>
 
 </head>
 
 <body>
 <header id="header"></header>
 <script>
-    //公共头部加载
-    $.getScript("../static/js/jquery.min.js");
-    $.getScript("../static/layui/layui.all.js");
-    $.getScript("../static/bootstrap/js/bootstrap.min.js");
-    $("#header").load("../static/head.html");
+
 </script>
 <div id="banner">
     <div class="pic">
         <ul>
-            <li class="first" style="display: list-item;"><img src="../static/image/b1.jpg" alt="图片"></li>
-            <li style="display: none;"><img src="../static/image/b2.jpg" alt="图片"></li>
-            <li style="display: none;"><img src="../static/image/b3.jpg" alt="图片"></li>
+            <li class="first" style="display: list-item;"><img alt="图片" src="../static/image/b1.jpg"></li>
+            <li style="display: none;"><img alt="图片" src="../static/image/b2.jpg"></li>
+            <li style="display: none;"><img alt="图片" src="../static/image/b3.jpg"></li>
         </ul>
     </div>
 
     <div class="picnav">
         <div class="oinner">
             <ul>
-                <li class="active"><img src="../static/image/b1.jpg" alt="图片"></li>
-                <li class=""><img src="../static/image/b2.jpg" alt="图片"></li>
-                <li class=""><img src="../static/image/b3.jpg" alt="图片"></li>
+                <li class="active"><img alt="图片" src="../static/image/b1.jpg"></li>
+                <li class=""><img alt="图片" src="../static/image/b2.jpg"></li>
+                <li class=""><img alt="图片" src="../static/image/b3.jpg"></li>
             </ul>
         </div>
     </div>
@@ -51,35 +48,42 @@
 </body>
 <script>
     $(function () {
+        //公共头部加载
+        $.getScript("../static/js/jquery.min.js");
+        $.getScript("../static/layui/layui.all.js");
+        $.getScript("../static/bootstrap/js/bootstrap.min.js");
+        $("#header").load("../static/head.html");
+        setTimeout(tuijian,1024);
+        function tuijian(){
         //动态添加推荐房源卡片
         // let ct = sessionStorage.getItem("city");
         // let town = sessionStorage.getItem("town");
         $.ajax({
-            url:"/recommed",
-            type:"post",
-            data:{"city":ct,"town":town},
-            success:function (ret){
-                if(ret.success){
-                    $.each(ret.data.List,function (index,item) {
+            url: "/recommed",
+            type: "post",
+            data: {"city": ct, "town": town},
+            success: function (ret) {
+                if (ret.success) {
+                    $.each(ret.data.List, function (index, item) {
                         console.log(item);
-                        let div1 = $("<div>",{class:"col-sm-6 col-md-4"});
-                        let div2 = $("<div>",{class:"thumbnail"});
-                        let img = $("<img>",{src:item.limg});
-                        let div3 = $("<div>",{class:"caption"});
-                        let h3 = $("<h3>",{text:item.lname});
-                        let p1 = $("<p>",{text:item.ldesc});
+                        let div1 = $("<div>", {class: "col-sm-6 col-md-4"});
+                        let div2 = $("<div>", {class: "thumbnail"});
+                        let img = $("<img>", {src: item.limg});
+                        let div3 = $("<div>", {class: "caption"});
+                        let h3 = $("<h3>", {text: item.lname});
+                        let p1 = $("<p>", {text: item.ldesc});
                         let p2 = $("<p>");
-                        let a1 = $("<a>",{
-                            text:'租房',
-                            href:'http://localhost:8080/listdetalis?lid='+item.lid,
-                            class:'btn btn-primary',
-                            role:'button'
+                        let a1 = $("<a>", {
+                            text: '租房',
+                            href: 'http://localhost:8080/listdetalis?lid=' + item.lid,
+                            class: 'btn btn-primary',
+                            role: 'button'
                         });
-                        let a2 = $("<a>",{
-                            text:'收藏',
-                            href:'http://localhost:8080/favorites?lid='+item.lid,
-                            class:'btn btn-default',
-                            role:'button'
+                        let a2 = $("<a>", {
+                            text: '收藏',
+                            href: 'http://localhost:8080/favorites?lid=' + item.lid,
+                            class: 'btn btn-default',
+                            role: 'button'
                         });
                         p2.append(a1);
                         p2.append(a2);
@@ -92,11 +96,12 @@
                         $(".row").append(div1);
                         // console.log(ret.data);
                     });
-                }else {
+                } else {
                     alert(ret.message);
                 }
             }
         });
+        }
     });
 </script>
 </html>
