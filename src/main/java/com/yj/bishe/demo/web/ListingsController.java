@@ -5,6 +5,7 @@ import com.yj.bishe.demo.service.IListingsService;
 import com.yj.bishe.demo.vo.JsonResult;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,8 +48,10 @@ public class ListingsController {
         return listingsService.recommedListingsByAddress(city, town);
     }
 
-    //首页房源列表显示
-    public JsonResult indexListings(){
+    //首页房源详细信息显示
+    @GetMapping("/listdetails")
+    @ResponseBody
+    public JsonResult listDetails(Integer lid){
 
         return null;
     }

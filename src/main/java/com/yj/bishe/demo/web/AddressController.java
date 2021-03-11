@@ -60,7 +60,7 @@ public class AddressController {
             street = jsonObject.get("address").toString();
             int endIndexOf = street.indexOf("街道");
             if(endIndexOf != -1){
-                street = street.substring(0,endIndexOf);
+                street = street.substring(0,endIndexOf+2);
                 flage = true;
             }
         }
