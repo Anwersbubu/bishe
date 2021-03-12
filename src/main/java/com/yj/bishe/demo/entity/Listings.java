@@ -2,12 +2,13 @@ package com.yj.bishe.demo.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author demo
@@ -59,6 +60,26 @@ public class Listings implements Serializable {
     private String lprice;
 
     /**
+     * 房源朝向
+     */
+    private String ltow;
+
+    /**
+     * 房源楼层
+     */
+    private String lfoo;
+
+    /**
+     * 房源装修(精装/毛坯/软装)
+     */
+    private String ldeco;
+
+    /**
+     * 房源特色(VR看房/有无电梯/复式洋楼/单元房)
+     */
+    private String lfea;
+
+    /**
      * 房源图片
      */
     private String limg;
@@ -85,6 +106,7 @@ public class Listings implements Serializable {
     public void setLid(Integer lid) {
         this.lid = lid;
     }
+
     public Integer getUid() {
         return uid;
     }
@@ -92,6 +114,7 @@ public class Listings implements Serializable {
     public void setUid(Integer uid) {
         this.uid = uid;
     }
+
     public String getUname() {
         return uname;
     }
@@ -99,6 +122,7 @@ public class Listings implements Serializable {
     public void setUname(String uname) {
         this.uname = uname;
     }
+
     public String getLname() {
         return lname;
     }
@@ -106,6 +130,7 @@ public class Listings implements Serializable {
     public void setLname(String lname) {
         this.lname = lname;
     }
+
     public Integer getAid() {
         return aid;
     }
@@ -113,6 +138,7 @@ public class Listings implements Serializable {
     public void setAid(Integer aid) {
         this.aid = aid;
     }
+
     public String getLsize() {
         return lsize;
     }
@@ -120,6 +146,7 @@ public class Listings implements Serializable {
     public void setLsize(String lsize) {
         this.lsize = lsize;
     }
+
     public String getLparttern() {
         return lparttern;
     }
@@ -127,6 +154,7 @@ public class Listings implements Serializable {
     public void setLparttern(String lparttern) {
         this.lparttern = lparttern;
     }
+
     public String getLprice() {
         return lprice;
     }
@@ -134,6 +162,39 @@ public class Listings implements Serializable {
     public void setLprice(String lprice) {
         this.lprice = lprice;
     }
+
+    public String getLtow() {
+        return ltow;
+    }
+
+    public void setLtow(String ltow) {
+        this.ltow = ltow;
+    }
+
+    public String getLfoo() {
+        return lfoo;
+    }
+
+    public void setLfoo(String lfoo) {
+        this.lfoo = lfoo;
+    }
+
+    public String getLdeco() {
+        return ldeco;
+    }
+
+    public void setLdeco(String ldeco) {
+        this.ldeco = ldeco;
+    }
+
+    public String getLfea() {
+        return lfea;
+    }
+
+    public void setLfea(String lfea) {
+        this.lfea = lfea;
+    }
+
     public String getLimg() {
         return limg;
     }
@@ -141,6 +202,7 @@ public class Listings implements Serializable {
     public void setLimg(String limg) {
         this.limg = limg;
     }
+
     public String getLdesc() {
         return ldesc;
     }
@@ -148,6 +210,7 @@ public class Listings implements Serializable {
     public void setLdesc(String ldesc) {
         this.ldesc = ldesc;
     }
+
     public String getLstat() {
         return lstat;
     }
@@ -155,6 +218,7 @@ public class Listings implements Serializable {
     public void setLstat(String lstat) {
         this.lstat = lstat;
     }
+
     public LocalDateTime getLtime() {
         return ltime;
     }
@@ -166,18 +230,22 @@ public class Listings implements Serializable {
     @Override
     public String toString() {
         return "Listings{" +
-        "lid=" + lid +
-        ", uid=" + uid +
-        ", uname=" + uname +
-        ", lname=" + lname +
-        ", aid=" + aid +
-        ", lsize=" + lsize +
-        ", lparttern=" + lparttern +
-        ", lprice=" + lprice +
-        ", limg=" + limg +
-        ", ldesc=" + ldesc +
-        ", lstat=" + lstat +
-        ", ltime=" + ltime +
-        "}";
+                "lid=" + lid +
+                ", uid=" + uid +
+                ", uname='" + uname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", aid=" + aid +
+                ", lsize='" + lsize + '\'' +
+                ", lparttern='" + lparttern + '\'' +
+                ", lprice='" + lprice + '\'' +
+                ", ltow='" + ltow + '\'' +
+                ", lfoo='" + lfoo + '\'' +
+                ", ldeco='" + ldeco + '\'' +
+                ", lfea='" + lfea + '\'' +
+                ", limg='" + limg + '\'' +
+                ", ldesc='" + ldesc + '\'' +
+                ", lstat='" + lstat + '\'' +
+                ", ltime=" + ltime +
+                '}';
     }
 }
