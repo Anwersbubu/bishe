@@ -70,4 +70,5 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
         }
         return ret;
     }
+
 }

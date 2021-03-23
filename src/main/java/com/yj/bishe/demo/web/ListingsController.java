@@ -1,6 +1,7 @@
 package com.yj.bishe.demo.web;
 
 
+import com.yj.bishe.demo.entity.User;
 import com.yj.bishe.demo.service.IListingsService;
 import com.yj.bishe.demo.vo.JsonResult;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -26,8 +28,15 @@ public class ListingsController {
     @Resource
     IListingsService listingsService;
 
-    @RequestMapping("/listings")//进入房源页
+    //进入房源页
+    @RequestMapping("/listings")
     public String listLings(){
+        return "listings";
+    }
+
+    //首页房源详细信息显示
+    @GetMapping("/listdetails")
+    public String listDetails(){
         return "listings";
     }
 
@@ -46,14 +55,6 @@ public class ListingsController {
         //通过城市和街道访问地址查询接口在地址表里得到aid，再用aid在收藏表里进行条件分类查询得到降序的uid集合，
         // 取前七个，查询出房源信息用Map包装成JSON数据传给前端
         return listingsService.recommedListingsByAddress(city, town);
-    }
-
-    //首页房源详细信息显示
-    @GetMapping("/listdetails")
-    @ResponseBody
-    public JsonResult listDetails(Integer lid){
-
-        return null;
     }
 
 }
