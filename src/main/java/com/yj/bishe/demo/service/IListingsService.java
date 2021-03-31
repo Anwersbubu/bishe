@@ -22,4 +22,7 @@ public interface IListingsService extends IService<Listings> {
     //推荐房源
     JsonResult recommedListingsByAddress(String city, String street);
 
+    //房源信息显示
+    JsonResult listDataByLid(int lid);
+
 }

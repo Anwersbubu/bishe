@@ -34,10 +34,16 @@ public class ListingsController {
         return "listings";
     }
 
-    //首页房源详细信息显示
+    //首页房源详细信息显示,先用listdetails进入房源信息页面，再用接口接收lid显示出信息
     @GetMapping("/listdetails")
     public String listDetails(){
-        return "listings";
+        return "listdata";
+    }
+
+    @PostMapping("/homedata")
+    @ResponseBody
+    public JsonResult listDataByLid(int lid){
+        return listingsService.listDataByLid(lid);
     }
 
     //关键字查询先通过高德将关键字所在地区查询出来到街道级，

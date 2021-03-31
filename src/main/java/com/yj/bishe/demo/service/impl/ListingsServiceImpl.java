@@ -71,4 +71,16 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
         return ret;
     }
 
+    @Override
+    public JsonResult listDataByLid(int lid) {
+        JsonResult ret;
+        Listings list = listingsMapper.selectById(lid);
+        if (list != null){
+            ret = new JsonResult(true,"房源信息查询成功");
+            ret.setData("list",list);
+        }else
+            ret = new JsonResult(false,"房源信息查询失败");
+        return ret;
+    }
+
 }
