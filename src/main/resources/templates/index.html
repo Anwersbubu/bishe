@@ -40,7 +40,7 @@
 </div>
 <script src="../static/js/bannerjs.js" type="text/javascript"></script>
 <section class="layui-container wrapper">
-    <h2>二手好房</h2><br>
+    <p style="font-size: 25px;color: #ce8483">二手好房</p>
     <div class="row" id="tuijian"></div>
 </section>
 <footer id="footer"></footer>
@@ -78,10 +78,10 @@
                         $("#tuijian").append("<div class='col-sm-6 col-md-4'><div class='thumbnail'><h3>您当前地区没有优选房源</h3></div></div>");
                     }
                     $.each(ret.data.List, function (index, item) {
-                        console.log(item);
+                        console.log(JSON.parse(item.limg).img1);
                         let div1 = $("<div>", {class: "col-sm-6 col-md-4"});
                         let div2 = $("<div>", {class: "thumbnail"});
-                        let img = $("<img>", {src: item.limg});
+                        let img = $("<img>", {src: JSON.parse(item.limg).img1});
                         let div3 = $("<div>", {class: "caption"});
                         let h3 = $("<h3>", {text: item.lname});
                         let p1 = $("<p>", {text: item.ldesc});
