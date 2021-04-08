@@ -1,9 +1,11 @@
 package com.yj.bishe.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.yj.bishe.demo.dao.FavoMapper;
+import com.yj.bishe.demo.dao.*;
+import com.yj.bishe.demo.entity.Address;
+import com.yj.bishe.demo.entity.Addressinfo;
 import com.yj.bishe.demo.entity.Listings;
-import com.yj.bishe.demo.dao.ListingsMapper;
+import com.yj.bishe.demo.entity.Pano;
 import com.yj.bishe.demo.service.IListingsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yj.bishe.demo.vo.JsonResult;
@@ -31,7 +33,19 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
     ListingsMapper listingsMapper;
 
     @Resource
+    AddressMapper addressMapper;
+
+    @Resource
+    AddressinfoMapper addressinfoMapper;
+
+    @Resource
+    UserMapper userMapper;
+
+    @Resource
     FavoMapper favoMapper;
+
+    @Resource
+    PanoMapper panoMapper;
 
     //关键字查询
     @Override
@@ -75,8 +89,32 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
     public JsonResult listDataByLid(int lid) {
         JsonResult ret;
         Listings list = listingsMapper.selectById(lid);
-        if (list != null){
-            ret = new JsonResult(true,"房源信息查询成功");
+        ret = new JsonResult(true,"房源信息查询成功");
+        if (list != null && list.getAid() != null && list.getUid() != null){
+            Address address = addressMapper.selectById(list.getAid());
+            String uphone = userMapper.selectById(list.getUid()).getUphone();
+            ret.setData("cell",uphone);
+            QueryWrapper<Pano> panwrapper = new QueryWrapper<>();
+            panwrapper.eq("lid",lid);
+            Pano pano = panoMapper.selectOne(panwrapper);
+            if (pano != null){
+                String panoPimg = pano.getPimg();
+                if (panoPimg != null){
+                    ret.setData("pimg",panoPimg);
+                }else ret.setData("pimg",null);
+            }
+            if (address != null ){
+                QueryWrapper<Addressinfo> wrapper = new QueryWrapper<>();
+                wrapper.eq("aid",list.getAid());
+                Addressinfo addressinfo = addressinfoMapper.selectOne(wrapper);
+                if (addressinfo != null){
+                    ret.setData("adress",address.show()+addressinfo.show());
+                }else {
+                    ret.setData("adress",address.show());
+                }
+            }else {
+                ret.setData("adress",null);
+            }
             ret.setData("list",list);
         }else
             ret = new JsonResult(false,"房源信息查询失败");

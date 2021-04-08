@@ -91,6 +91,10 @@ public class Address implements Serializable {
         this.street = street;
     }
 
+    public String show(){
+        return country + province + city + area + street ;
+    }
+
     @Override
     public String toString() {
         return "Address{" +

@@ -88,6 +88,10 @@ public class Addressinfo implements Serializable {
         this.weidu = weidu;
     }
 
+    public String show(){
+        return  rural + hnum + jingdu + weidu ;
+    }
+
     @Override
     public String toString() {
         return "Addressinfo{" +

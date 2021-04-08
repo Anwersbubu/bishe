@@ -162,6 +162,21 @@
     border-radius: 10px;
     cursor: pointer;
 }
+
+.vr{
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+    background-color: #ffc601;
+    border: none;
+    outline: none;
+    color: #fff;
+    margin-left:55px ;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
 .anchor-title{
     width: 740px;
     height: 100px;
