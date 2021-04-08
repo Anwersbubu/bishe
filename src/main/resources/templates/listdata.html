@@ -15,9 +15,6 @@
     <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
             type="text/javascript"></script>
     <style>
-        .layui-carousel-ind{
-            top:-20px!important;
-        }
     </style>
     <script>
         let lid = location.search.substr(5, 1);
@@ -82,9 +79,7 @@
     <div class="carousel-image layui-pull-left layui-col-md7">
         <div class="layui-carousel" id="details-image">
             <div carousel-item style="float: left;">
-                <img src="../static/image/bg.jpg">
-                <img src="../static/image/b1.jpg">
-                <img src="../static/image/b2.jpg">
+<!--                <img src="../static/image/bg.jpg">-->
             </div>
         </div>
     </div>
@@ -108,7 +103,6 @@
     </div>
     <div class="anchor-title">
         <h3>房屋配置</h3>
-        <a href="https://penglai.baidu.com/pano-share.html?shareId=share_5386a52cc">全景</a>
     </div>
     <div class="household-appliances">
         <ul>
@@ -174,17 +168,6 @@
 <footer id="footer"></footer>
 </body>
 <script>
-    //轮播图js
-    layui.use('carousel',function (){
-        var carousel = layui.carousel;
-        carousel.render({
-            elem: "#details-image",
-            width: "100%",
-            height: "400px",
-            interval:"3000",
-            anim: "default"
-        });
-    });
     $(function (){
         $.getScript("../static/js/jquery.min.js");
         $.getScript("../static/layui/layui.all.js");
@@ -213,13 +196,22 @@
             }else {
                 $(".order-btn-container").append("<button class='order-btn'>现在订房</button>")
             }
-
             let imgs = JSON.parse(date.limg);
-            for (let img in imgs) {
-                let backdiv = $("<div>").attr('style',"background: url('"+imgs[img]+"') no-repeat center/cover");
-                // $(".bbackdiv").append(backdiv);
-                // $(".layui-carousel-ind ul").append("<li ></li>");
+            for (let i in imgs) {
+                let lunboimg = $("<img>").attr("src",imgs[i]);
+                $("#details-image div").eq(0).append(lunboimg);
             }
+            //轮播图js
+            layui.use('carousel',function (){
+                var carousel = layui.carousel;
+                carousel.render({
+                    elem: "#details-image",
+                    width: "100%",
+                    height: "400px",
+                    interval:"3000",
+                    anim: "default"
+                });
+            });
         }else {
             djs();
         }
