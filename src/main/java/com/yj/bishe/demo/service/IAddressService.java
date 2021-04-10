@@ -22,4 +22,7 @@ public interface IAddressService extends IService<Address> {
     //租房按钮
     JsonResult zufangSer(String city, String street);
 
+    //通过aid得到地址
+    JsonResult aidToAddress(int aid);
+
 }

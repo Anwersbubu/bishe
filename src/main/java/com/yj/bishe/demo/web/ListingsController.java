@@ -50,8 +50,8 @@ public class ListingsController {
     //然后再通过查询出的地址到自己的数据库中查出对应的地址ID，再通过地址ID到房源表查询房源
     @PostMapping("/listingsbyaid")
     @ResponseBody
-    public JsonResult searchByKey(int key){
-        return listingsService.searchListingsByAid(key);
+    public JsonResult searchByKey(int key,int setype){
+        return listingsService.searchListingsByAid(key,setype);
     }
 
     //房源推荐:先通过前端传过来的地址信息在地址表找出对应的aid然后通过aid在收藏表里筛选出aid下的前7个房源

@@ -171,8 +171,8 @@
             },
             success: function (ret) {
                 if (ret.success) {
-                    sessionStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
-                    window.location.href = "http://localhost:8080/listings";
+                    // sessionStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
+                    window.location.href = "http://localhost:8080/listings?id="+ret.data.aid;
                 } else
                     alert(ret.message);
             }

@@ -57,4 +57,16 @@ public class AddressServiceImpl extends ServiceImpl<AddressMapper, Address> impl
         }
         return ret;
     }
+
+    @Override
+    public JsonResult aidToAddress(int aid) {
+        JsonResult ret;
+        Address address = addressMapper.selectById(aid);
+        if (address != null){
+            ret = new JsonResult(true,"地址转换完成");
+            ret.setData("address",address.show());
+        }else
+            ret = new JsonResult(false,"地址转换失败");
+        return ret;
+    }
 }

@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -49,15 +46,28 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
 
     //关键字查询
     @Override
-    public JsonResult searchListingsByAid(int aid) {
+    public JsonResult searchListingsByAid(int aid, int searchtype) {
         JsonResult ret;
-            QueryWrapper<Listings> wrapper2 = new QueryWrapper<>();
-            wrapper2.eq("aid",aid);
+        QueryWrapper<Listings> wrapper2 = new QueryWrapper<>();
+        wrapper2.eq("aid",aid);
+        switch (searchtype){
+            case -1 : wrapper2.orderByDesc("lprice");break;
+            case 1 : wrapper2.orderByAsc("lprice");break;
+            default:break;
+        }
             List<Listings> listingsList = listingsMapper.selectList(wrapper2);
             if (listingsList.size() > 0){
                 ret = new JsonResult(true,"关键字查询到房源信息");
-                Map<Integer, Listings> listingsMap = listingsList.stream().collect(Collectors.toMap(Listings::getLid, Function.identity()));
-                ret.setData("listings",listingsMap);
+//                Map<String,Listings> listingsMap = new HashMap<>();
+                List<String>  addressList = new ArrayList<>();
+                for (Listings list : listingsList){
+//                    listingsMap.put(list.getLid().toString(),list);
+                    addressList.add(addressMapper.selectById(list.getAid()).show());
+                }
+
+//                Map<Integer, Listings> listingsMap = listingsList.stream().collect(Collectors.toMap(Listings::getLid, Function.identity()));
+                ret.setData("addresss",addressList);
+                ret.setData("listings",listingsList);
             }else {
                 ret = new JsonResult(false,"关键字所在地区无房源");
             }
@@ -99,9 +109,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
             Pano pano = panoMapper.selectOne(panwrapper);
             if (pano != null){
                 String panoPimg = pano.getPimg();
-                if (panoPimg != null){
-                    ret.setData("pimg",panoPimg);
-                }else ret.setData("pimg",null);
+                ret.setData("pimg", panoPimg);
             }
             if (address != null ){
                 QueryWrapper<Addressinfo> wrapper = new QueryWrapper<>();

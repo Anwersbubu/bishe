@@ -70,6 +70,13 @@ public class AddressController {
             return new JsonResult(false,"关键字信息不全");
     }
 
+    //通过aid返回地址字符串
+    @PostMapping("/showAddress")
+    @ResponseBody
+    public JsonResult AidToAddress(int key){
+        return addressService.aidToAddress(key);
+    }
+
     //租房按钮根据定位显示房源信息
     @PostMapping("/zufang")
     @ResponseBody
