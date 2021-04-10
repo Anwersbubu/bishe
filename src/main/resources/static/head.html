@@ -135,6 +135,9 @@
             url: "/getaddress",
             type: "post",
             data: {"param": addr},
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
             success: function (ret) {
                 if (ret.status == 1) {
                     console.log(ret.regeocode.formatted_address);
@@ -145,8 +148,6 @@
                     town = ret.regeocode.addressComponent.township;//街道
                     stree = ret.regeocode.addressComponent.streetNumber.street;//路
                     num = ret.regeocode.addressComponent.streetNumber.number;//门牌号
-                    // sessionStorage.setItem("city",ct);//将当前用户的地址市级和街道放到sessionStrorage中以供其他页面使用
-                    // sessionStorage.setItem("town",town);
                     $(".glyphicon-map-marker").text(ct);//动态设置定位显示
                     $(".form-group").find("input").eq(0).val(ct);//搜索框带的市级信息
                 }
@@ -165,9 +166,12 @@
             url: "/search",
             type: "get",
             data: {"city": ct, "keywords": $(".form-group").find("input").eq(1).val()},
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
             success: function (ret) {
                 if (ret.success) {
-                    localStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
+                    sessionStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
                     window.location.href = "http://localhost:8080/listings";
                 } else
                     alert(ret.message);
@@ -180,11 +184,13 @@
         $.ajax({
             url: "/zufang",
             type: "post",
-            data: {"city": ct, "street": stree},
+            data: {"city": ct, "street": town},
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
             success: function (ret) {
                 if (ret.success) {
-                    localStorage.setItem("aid", ret.data.aid);//用localStorage共享页面数据
-                    window.location.href = "http://localhost:8080/listings";
+                    location.href = "http://localhost:8080/listings?id="+ret.data.aid;
                 } else
                     alert(ret.message);
             }

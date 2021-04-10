@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="//at.alicdn.com/t/font_848666_pri5cwk3xde.css"/>
     <script src="../static/js/jquery.min.js" type="text/javascript"></script>
     <script charset="utf-8" src="../static/layui/layui.all.js" type="text/javascript"></script>
-<!--    <script charset="utf-8" src="../static/layui/layui.js" type="text/javascript"></script>-->
     <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
             type="text/javascript"></script>
@@ -38,6 +37,9 @@
                 data:{"lid":lid},
                 async:false,//异步改为同步，为了改变全局变量
                 type:"post",
+                xhrFields: {
+                    withCredentials: true//允许跨域带cookie
+                },
                 success:function (ret){
                     if (ret.success){
                         date = ret.data.list;
@@ -174,8 +176,8 @@
         $.getScript("../static/bootstrap/js/bootstrap.min.js");
         $("#header").load("../static/head.html");
         $("#footer").load("../static/foot.html");
-        if (date != null || date != "undifind"){
-            console.log(date);
+        if (date != null || date != undefined){
+            // console.log(date);
             $(".house-title").text(date.lname);
             $(".tags span").eq(0).text(date.ldesc);
             $(".layui-breadcrumb a").eq(0).attr("href","index");

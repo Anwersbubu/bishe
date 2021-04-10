@@ -3,24 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <title>房源列表页</title>
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="../static/css/bannercss.css" rel="stylesheet">
+    <link href="../static/css/global.css" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_848666_pri5cwk3xde.css"/>
     <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script charset="utf-8" src="../static/layui/layui.all.js" type="text/javascript"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
+            type="text/javascript"></script>
     <script>
-        let item = localStorage.getItem("aid");
-        alert(lid);
-        if(item != null){
+        let aid = location.search.substr(4, 1);
+        var listMap;
+        if(aid > 0){
         $.ajax({
            url:"/listingsbyaid",
            type:"post",
-           data:{"key":item},
+           data:{"key":aid},
+            async:false,//异步改为同步，为了改变全局变量
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
            success:function (ret){
-               console.log(ret);
+               if (ret.success){
+                   listMap = ret.data.listings;
+                   // console.log(listMap);
+               }else
+                   location.href = "http://localhost:8080/index";
            }
         });
         }else {
-            window.location.href = "http://localhost:8080/index";
+            location.href = "http://localhost:8080/index";
         }
     </script>
 </head>
 <body>
+<header id="header"></header>
+<!--内容开始-->
+<div class="list_control_bar layui-container" style="padding: 0">
+    <div>
+        <div class="list_title layui-pull-left"><span>全部房源</span></div>
+        <div class="list_more">
+            <ul class="layui-pull-right list-item">
+                <li class="click-this"><a href="toIndexPage">默认排序</a></li>
+                <li><a href="findHousrOrderByAsc">价格升序</a></li>
+                <li><a href="findHousrOrderByDesc">价格降序</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<section class="layui-container">
+    <hr>
+    <h2>共找到<span style="color: #ffc601;margin: 0 5px;" id="numspan"></span>套出租房源</h2>
+    <div class="house-detail">
+        <ul></ul>
+    </div>
+</section>
+<footer id="footer"></footer>
 </body>
+<script>
+    $(function (){
+        $.getScript("../static/js/jquery.min.js");
+        $.getScript("../static/layui/layui.all.js");
+        $.getScript("../static/bootstrap/js/bootstrap.min.js");
+        $("#header").load("../static/head.html");
+        $("#footer").load("../static/foot.html");
+        if (listMap != undefined || listMap != null){
+            let num = 0;
+            for (let n in listMap) {num++;}
+            $("#numspan").text(num);
+            let ul = $(".house-detail ul").eq(0);
+            for (let i in listMap) {
+                let li = $("<li>");
+                let a = $("<a href='http://localhost:8080/listdetails?lid='"+listMap[i].lid+" class='show-image'>");
+                let img = $("<img src='"+JSON.parse(listMap[i].limg)[1]+"' width='240px' height='180px'>")
+                a.append(img);
+                li.append(a);
+                ul.append(li);
+                let div = $("<div class='show-details'>");
+                let p1 = $("<p class='house-title'><a href='http://localhost:8080/listdetails?lid='"+listMap[i].lid+">"+listMap[i].lname+"</a></p>")
+                div.append(p1);
+                let p2 = $("<p class='house-about'>");
+                let p2Span1 = $("<span class='layui-icon layui-icon-home'></span>");
+                let p2Span2 = $("<span>"+listMap[i].lparttern+"</span>");
+                let p2Span3_ = $("<span class='flag-line'>|</span>");
+                let p2Span4 = $("<span>"+listMap[i].lsize+" m <sup>2</sup></span>");
+                let p2Span5 = $("<span>"+listMap[i].ldeco+"</span>");
+                let p2Span6 = $("<span>"+listMap[i].lfoo+"</span>");
+                let p2Span7 = $("<span>"+listMap[i].ltow+"</span>");
+                p2.append(p2Span1).append(p2Span2).append(p2Span3_).append(p2Span4).append(p2Span3_).append(p2Span5).append(p2Span3_).append(p2Span6).append(p2Span3_).append(p2Span7);
+                div.append(p2);
+                let p3 = $("<p class='house-address clearfix'>");
+                let p3Span1 = $("<span class='layui-icon layui-icon-location'>");
+                let p3Span2 = $("<span class='show-price'>")
+                console.log(listMap[i]);
+            }
+        }else
+            location.href = "http://localhost:8080/index";
+    });
+</script>
 </html>

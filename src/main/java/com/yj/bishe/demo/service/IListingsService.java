@@ -25,4 +25,6 @@ public interface IListingsService extends IService<Listings> {
     //房源信息显示
     JsonResult listDataByLid(int lid);
 
+    //房源列表显示
+
 }

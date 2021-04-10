@@ -72,6 +72,9 @@
             url: "/recommed",
             type: "post",
             data: {"city": ct, "town": town},
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
             success: function (ret) {
                 if (ret.success) {
                     if(ret.data.List.length == 0){
