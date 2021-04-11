@@ -25,4 +25,19 @@ public interface IAddressService extends IService<Address> {
     //通过aid得到地址
     JsonResult aidToAddress(int aid);
 
+    //获取表中全部国家信息
+    JsonResult getAllCountry();
+
+    //根据国家获取省份
+    JsonResult getAllProvniceByCountry(String country);
+
+    //根据国家和省份获取城市
+    JsonResult getCityByCountryProv(String country, String province);
+
+    //根据国家、省份和城市获取区
+    JsonResult getAreaByCounPrpCt(String country, String province, String city);
+
+    //根据国家、省份、城市和区获取街道
+    JsonResult getStreetByCounProCtAr(String country, String province, String city, String area);
+
 }

@@ -2,6 +2,7 @@ package com.yj.bishe.demo.web;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yj.bishe.demo.entity.Address;
 import com.yj.bishe.demo.service.IAddressService;
 import com.yj.bishe.demo.util.GaoDeApi;
 import com.yj.bishe.demo.vo.JsonResult;
@@ -9,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * <p>
@@ -33,6 +36,45 @@ public class AddressController {
 
     @Resource
     IAddressService addressService;
+
+    //访问更改定位页面
+    @RequestMapping("/address")
+    public String toAddress(){return "changeAddress";}
+
+    //获取地址表中的国家信息
+    @PostMapping("/getcountry")
+    @ResponseBody
+    public JsonResult getAllCountry(){
+        return addressService.getAllCountry();
+    }
+
+    //通过国家获取省
+    @PostMapping("/getProvince")
+    @ResponseBody
+    public JsonResult getAllProvince(String country){
+        return addressService.getAllProvniceByCountry(country);
+    }
+
+    //通过国家和省份获取城市
+    @PostMapping("/getCity")
+    @ResponseBody
+    public JsonResult getAllCity(String country, String province){
+        return addressService.getCityByCountryProv(country,province);
+    }
+
+    //通过国家、省份和城市获取区
+    @PostMapping("/getArea")
+    @ResponseBody
+    public JsonResult getAllArea(String country, String province, String city){
+        return  addressService.getAreaByCounPrpCt(country, province, city);
+    }
+
+    //通过国家、省份、城市和区获取街道
+    @PostMapping("/getStreet")
+    @ResponseBody
+    public JsonResult getAllStreet(String country, String province, String city, String area){
+        return addressService.getStreetByCounProCtAr(country, province, city, area);
+    }
 
     //根据前端传来的地址经纬度查询出具体地址信息
     @PostMapping("/getaddress")

@@ -50,6 +50,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
         JsonResult ret;
         QueryWrapper<Listings> wrapper2 = new QueryWrapper<>();
         wrapper2.eq("aid",aid);
+        wrapper2.eq("lstat","空闲");
         switch (searchtype){
             case -1 : wrapper2.orderByDesc("lprice");break;
             case 1 : wrapper2.orderByAsc("lprice");break;
@@ -85,6 +86,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
                 QueryWrapper<Listings> wrapper = new QueryWrapper<>();
                 wrapper.eq("lid",lid).eq("lstat","空闲");
                 Listings listings = listingsMapper.selectOne(wrapper);
+                if (listings != null)
                 recommedList.add(listings);
             }
             ret = new JsonResult(true,"定位地区推荐房源成功");
@@ -98,7 +100,10 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
     @Override
     public JsonResult listDataByLid(int lid) {
         JsonResult ret;
-        Listings list = listingsMapper.selectById(lid);
+        QueryWrapper<Listings> wrapper1 = new QueryWrapper<>();
+        wrapper1.eq("lid",lid);
+        wrapper1.eq("lstat","空闲");
+        Listings list = listingsMapper.selectOne(wrapper1);
         ret = new JsonResult(true,"房源信息查询成功");
         if (list != null && list.getAid() != null && list.getUid() != null){
             Address address = addressMapper.selectById(list.getAid());

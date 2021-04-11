@@ -79,39 +79,40 @@
                 if (ret.success) {
                     if(ret.data.List.length == 0){
                         $("#tuijian").append("<div class='col-sm-6 col-md-4'><div class='thumbnail'><h3>您当前地区没有优选房源</h3></div></div>");
+                    }else {
+                        $.each(ret.data.List, function (index, item) {
+                            console.log(JSON.parse(item.limg).img1);
+                            let div1 = $("<div>", {class: "col-sm-6 col-md-4"});
+                            let div2 = $("<div>", {class: "thumbnail"});
+                            let img = $("<img>", {src: JSON.parse(item.limg).img1});
+                            let div3 = $("<div>", {class: "caption"});
+                            let h3 = $("<h3>", {text: item.lname});
+                            let p1 = $("<p>", {text: item.ldesc});
+                            let p2 = $("<p>");
+                            let a1 = $("<a>", {
+                                text: '租房',
+                                href: 'http://localhost:8080/listdetails?lid=' + item.lid,
+                                class: 'btn btn-primary',
+                                role: 'button'
+                            });
+                            let a2 = $("<a>", {
+                                text: '收藏',
+                                href: 'http://localhost:8080/users/favorites?lid=' + item.lid,
+                                class: 'btn btn-default',
+                                role: 'button'
+                            });
+                            p2.append(a1);
+                            p2.append(a2);
+                            div3.append(h3);
+                            div3.append(p1);
+                            div3.append(p2);
+                            div2.append(img);
+                            div2.append(div3);
+                            div1.append(div2);
+                            $("#tuijian").append(div1);
+                            // console.log(ret.data);
+                        });
                     }
-                    $.each(ret.data.List, function (index, item) {
-                        console.log(JSON.parse(item.limg).img1);
-                        let div1 = $("<div>", {class: "col-sm-6 col-md-4"});
-                        let div2 = $("<div>", {class: "thumbnail"});
-                        let img = $("<img>", {src: JSON.parse(item.limg).img1});
-                        let div3 = $("<div>", {class: "caption"});
-                        let h3 = $("<h3>", {text: item.lname});
-                        let p1 = $("<p>", {text: item.ldesc});
-                        let p2 = $("<p>");
-                        let a1 = $("<a>", {
-                            text: '租房',
-                            href: 'http://localhost:8080/listdetails?lid=' + item.lid,
-                            class: 'btn btn-primary',
-                            role: 'button'
-                        });
-                        let a2 = $("<a>", {
-                            text: '收藏',
-                            href: 'http://localhost:8080/users/favorites?lid=' + item.lid,
-                            class: 'btn btn-default',
-                            role: 'button'
-                        });
-                        p2.append(a1);
-                        p2.append(a2);
-                        div3.append(h3);
-                        div3.append(p1);
-                        div3.append(p2);
-                        div2.append(img);
-                        div2.append(div3);
-                        div1.append(div2);
-                        $("#tuijian").append(div1);
-                        // console.log(ret.data);
-                    });
                 } else {
                     alert(ret.message);
                 }
