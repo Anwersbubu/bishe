@@ -1,6 +1,8 @@
 package com.yj.bishe.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yj.bishe.demo.dao.*;
 import com.yj.bishe.demo.entity.Address;
 import com.yj.bishe.demo.entity.Addressinfo;
@@ -46,7 +48,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
 
     //关键字查询
     @Override
-    public JsonResult searchListingsByAid(int aid, int searchtype) {
+    public JsonResult searchListingsByAid(int aid, int searchtype, int page) {
         JsonResult ret;
         QueryWrapper<Listings> wrapper2 = new QueryWrapper<>();
         wrapper2.eq("aid",aid);
@@ -56,17 +58,15 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
             case 1 : wrapper2.orderByAsc("lprice");break;
             default:break;
         }
-            List<Listings> listingsList = listingsMapper.selectList(wrapper2);
-            if (listingsList.size() > 0){
+        Page<Listings> pageHelp = new Page<>(page,10,false);
+        IPage<Listings> listingsIPage = listingsMapper.selectPage(pageHelp, wrapper2);
+            if (listingsIPage.getSize() > 0){
+                List<Listings> listingsList = listingsIPage.getRecords();
                 ret = new JsonResult(true,"关键字查询到房源信息");
-//                Map<String,Listings> listingsMap = new HashMap<>();
                 List<String>  addressList = new ArrayList<>();
                 for (Listings list : listingsList){
-//                    listingsMap.put(list.getLid().toString(),list);
                     addressList.add(addressMapper.selectById(list.getAid()).show());
                 }
-
-//                Map<Integer, Listings> listingsMap = listingsList.stream().collect(Collectors.toMap(Listings::getLid, Function.identity()));
                 ret.setData("addresss",addressList);
                 ret.setData("listings",listingsList);
             }else {
@@ -131,6 +131,53 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
             ret.setData("list",list);
         }else
             ret = new JsonResult(false,"房源信息查询失败");
+        return ret;
+    }
+
+    @Override
+    public JsonResult getCountPage(int aid) {
+        JsonResult ret;
+        if (aid > 0){
+            QueryWrapper<Listings> wrapper = new QueryWrapper<>();
+            wrapper.eq("aid",aid);
+            wrapper.eq("lstat","空闲");
+            Integer count = listingsMapper.selectCount(wrapper);
+            if (count > 0){
+                ret = new JsonResult(true,"当前地区下的房源总数成功获取");
+                ret.setData("count",count);
+            }else ret = new JsonResult(false,"当前地区下没有房源");
+        }else ret = new JsonResult(false,"地址信息空白");
+        return ret;
+    }
+
+    @Override
+    public JsonResult fenleichaxun(int aid,int page, String hprice, String hsize, String hfoo, String htow, String hdeco, String hfea, String hgeju) {
+        JsonResult ret = null;
+        if (aid > 0) {
+            QueryWrapper<Listings> wrapper = new QueryWrapper<>();
+            wrapper.eq("lstat","空闲");
+            System.out.println(hprice+hsize+hfoo+htow+hdeco+hgeju);
+            if (!hprice.equals("asc")) wrapper.orderByAsc("lprice");
+            else wrapper.orderByDesc("lprice");
+            if (!hsize.equals("asc")) wrapper.orderByAsc("lsize");
+            else wrapper.orderByDesc("lprice");
+            if (!hfoo.equals("默认")) wrapper.eq("lfoo",hfoo);
+            if (!htow.equals("默认")) wrapper.eq("ltow",htow);
+            if (!hdeco.equals("默认")) wrapper.eq("ldeco",hdeco);
+            if (!hgeju.equals("")) wrapper.like("lparttern",hgeju);
+            Page<Listings> p = new Page<>(page,10,false);
+            List<Listings> listingsList = listingsMapper.selectPage(p, wrapper).getRecords();
+            if (listingsList != null && listingsList.size() > 0){
+                ret = new JsonResult(true,"分类查询成功");
+                List<String> addressList = new ArrayList<>();
+                for (Listings l : listingsList){
+                    addressList.add(addressMapper.selectById(l.getAid()).show());
+                }
+                ret.setData("num",listingsList.size());
+                ret.setData("listingsList",listingsList);
+                ret.setData("addressList",addressList);
+            }else ret = new JsonResult(false,"分类查询失败,数据不全");
+        }else ret = new JsonResult(false,"地址信息错误");
         return ret;
     }
 

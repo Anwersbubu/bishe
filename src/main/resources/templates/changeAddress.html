@@ -28,28 +28,29 @@
 <header id="header"></header>
 <section class="container">
     <hr>
-    <div class="col-md-4 dropdown">
+<!-- 城市选择 -->
+    <div class="col-md-12 dropdown">
         <h3><b  style="color: #8485e2">城市选择 &nbsp;&nbsp;</b></h3>
         <div class="price-grid">
-            <div class="col-sm-2 price-top">
+            <div class="col-sm-4 price-top">
                 <h4>国家</h4>
                 <select class="in-drop country" onchange="clickCountry()"></select>
             </div>
-            <div class="col-sm-2 price-top">
+            <div class="col-sm-4 price-top">
                 <h4>省份</h4>
                 <select class="in-drop province" onchange="clickProvince()" disabled="disabled" ></select>
             </div>
-            <div class="col-sm-2 price-top">
+            <div class="col-sm-4 price-top">
                 <h4>城市</h4>
                 <select class="in-drop city" onchange="clickCity()" disabled="disabled"></select>
             </div>
-            <div class="col-sm-2 price-top">
+            <div class="col-sm-4 price-top">
                 <h4>区</h4>
                 <select class="in-drop area" onchange="clickArea()" disabled="disabled"></select>
             </div>
-            <div class="col-sm-2 price-top">
+            <div class="col-sm-4 price-top">
                 <h4>选择街道</h4>
-                <select class="in-drop street" disabled="disabled"><option></option></select>
+                <select class="in-drop street" onchange="clickStreet()" disabled="disabled"><option></option></select>
             </div>
         </div>
     </div>
@@ -63,12 +64,11 @@
         $.getScript("../static/bootstrap/js/bootstrap.min.js");
         $("#header").load("../static/head.html");
         $("#footer").load("../static/foot.html");
-        console.log($("#countryMenu").text());
         $.post("/getcountry",function (ret){
             if (ret.success) {
                 let seCountry = $(".country");
                 let country = ret.data.countryList;
-                seCountry.append("<option>选择国家</option>");
+                seCountry.append("<option value=''>选择国家</option>");
                 for (let i in country) {
                     let option = $("<option>"+country[i].country+"</option>");
                     seCountry.append(option);
@@ -88,7 +88,7 @@
                     let seProvince = $(".province");
                     let province = ret.data.provinceList;
                     seProvince.empty();
-                    seProvince.append("<option>选择省份</option>");
+                    seProvince.append("<option value=''>选择省份</option>");
                     for (let i in province) {
                         let option = $("<option>"+province[i].province+"</option>");
                         seProvince.append(option);
@@ -113,7 +113,7 @@
                     let seCity = $(".city");
                     let cityList = ret.data.cityList;
                     seCity.empty();
-                    seCity.append("<option>选择城市</option>");
+                    seCity.append("<option value=''>选择城市</option>");
                     for (let i in cityList) {
                         let option = $("<option>"+cityList[i].city+"</option>");
                         seCity.append(option);
@@ -137,7 +137,7 @@
                     let seArea = $(".area");
                     let areaList = ret.data.areaList;
                     seArea.empty();
-                    seArea.append("<option>选择区</option>");
+                    seArea.append("<option value=''>选择区</option>");
                     for (let i in areaList) {
                         let option = $("<option>"+areaList[i].area+"</option>");
                         seArea.append(option);
@@ -162,7 +162,7 @@
                     let seStreet = $(".street");
                     let streetList = ret.data.streetList;
                     seStreet.empty();
-                    seStreet.append("<option>选择街道</option>");
+                    seStreet.append("<option value=''>选择街道</option>");
                     for (let i in streetList) {
                         let option = $("<option>"+streetList[i].street+"</option>");
                         seStreet.append(option);
@@ -173,6 +173,19 @@
             });
         }else {
             alert("请先选择区");
+        }
+    }
+
+    function clickStreet(){
+        if ($(".street").val() != ""){
+            let city = $(".city").children('option:selected').text();
+            let street = $(".street").children('option:selected').text();
+            sessionStorage.setItem("city",city);
+            sessionStorage.setItem("town",street);
+            alert("您的定位已修改");
+            location.href = "http://localhost:8080/index";
+        }else {
+            alert("请先选择街道");
         }
     }
 

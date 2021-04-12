@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public interface IListingsService extends IService<Listings> {
 
     //关键字查询,searchtype是用来排序的，-1、0、1分别对应降序、默认、升序，
-    JsonResult searchListingsByAid(int aid,int searchtype);
+    JsonResult searchListingsByAid(int aid,int searchtype, int page);
 
     //推荐房源
     JsonResult recommedListingsByAddress(String city, String street);
@@ -25,6 +25,10 @@ public interface IListingsService extends IService<Listings> {
     //房源信息显示
     JsonResult listDataByLid(int lid);
 
-    //房源列表显示
+    //获取总页数
+    JsonResult getCountPage(int aid);
+
+    //分类查询
+    JsonResult fenleichaxun(int aid, int page, String hprice, String hsize, String hfoo, String htow, String hdeco, String hfea, String hgeju);
 
 }

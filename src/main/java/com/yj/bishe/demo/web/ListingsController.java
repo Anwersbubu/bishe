@@ -46,12 +46,26 @@ public class ListingsController {
         return listingsService.listDataByLid(lid);
     }
 
+    //获取某地区下的房源数
+    @PostMapping("/getcount")
+    @ResponseBody
+    public JsonResult getCountByAid(int aid){
+        return listingsService.getCountPage(aid);
+    }
+
+    //分类查询
+    @PostMapping("/fenleichaxun")
+    @ResponseBody
+    public JsonResult fenleichaxunGetList(int aid,int page, String hprice, String hsize, String hfoo, String htow, String hdeco, String hfea, String hgeju){
+        return listingsService.fenleichaxun(aid, page, hprice, hsize, hfoo, htow, hdeco, hfea, hgeju);
+    }
+
     //关键字查询先通过高德将关键字所在地区查询出来到街道级，
     //然后再通过查询出的地址到自己的数据库中查出对应的地址ID，再通过地址ID到房源表查询房源
     @PostMapping("/listingsbyaid")
     @ResponseBody
-    public JsonResult searchByKey(int key,int setype){
-        return listingsService.searchListingsByAid(key,setype);
+    public JsonResult searchByKey(int key,int setype, int page){
+        return listingsService.searchListingsByAid(key,setype,page);
     }
 
     //房源推荐:先通过前端传过来的地址信息在地址表找出对应的aid然后通过aid在收藏表里筛选出aid下的前7个房源
