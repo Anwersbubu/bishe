@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>房源上传</title>
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="../static/css/bannercss.css" rel="stylesheet">
+    <link href="../static/css/details.css" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_848666_pri5cwk3xde.css"/>
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script charset="utf-8" src="../static/layui/layui.all.js" type="text/javascript"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
+            type="text/javascript"></script>
+    <style>
+        .layui-form-label{
+            width: auto;
+        }
+    </style>
+</head>
+<body>
+<header id="header"></header>
+<section class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-sm12 warning">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend style="font-size: 26px">发布房源信息</legend>
+            </fieldset>
+            <form id="addhouseForm" class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋标题</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" name="hname" required lay-verify="required" placeholder="(必填)显示在推荐卡片上的名字">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋地址</label>
+                    <div class="layui-input-block">
+                        <select name="haddress" lay-verify="required">
+
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋大小</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" name="hsize" required lay-verify="required" placeholder="(必填)房屋面积">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋格局</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" name="hparttern" required lay-verify="required" placeholder="(必填)几室几厅几卫">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋价格</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" name="hprice" required lay-verify="required" placeholder="(必填)">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋朝向</label>
+                    <div class="layui-input-block">
+                        <select name="htow" lay-verify="required">
+                            <option>朝北</option>
+                            <option>朝南</option>
+                            <option>朝西</option>
+                            <option>朝东</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋楼层</label>
+                    <div class="layui-input-block">
+                        <select name="hfoo" lay-verify="required">
+                            <option>低层</option>
+                            <option>中层</option>
+                            <option>高层</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋装修</label>
+                    <div class="layui-input-block">
+                        <select name="hdeco" lay-verify="required">
+                            <option>精装</option>
+                            <option>简装</option>
+                            <option>毛坯</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋特点</label>
+                    <div class="layui-input-block">
+                        <select name="=hfea" lay-verify="required">
+                            <option>全景看房</option>
+                            <option>电梯入户</option>
+                            <option>复式洋楼</option>
+                            <option>单元房</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋描述</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="hdesc" placeholder="(选填)描述房屋的两点，让大家更好的了解哦" required lay-verify="required"></textarea>
+                    </div>
+                </div>
+                <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px">
+                    <legend>上传房屋图片(可以多张哦)</legend>
+                </fieldset>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋详细图片</label>
+                    <div class="layui-upload layui-input-block">
+                        <button type="button" class="layui-btn layui-btn-primary" id="MultipleUpload">选择详细图片</button>
+                        <button type="button" class="layui-btn" id="testListAction">开始上传</button>
+                        <div class="layui-upload-list">
+                            <table class="layui-table">
+                                <thead>
+                                <tr><th>文件名</th>
+                                    <th>大小</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr></thead>
+                                <tbody id="detailsList"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="addHouseRecord" id="addHouseRecord-btn">现在发布</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+    layui.use(['form','upload'],function (){
+       let form = layui.form,
+           upload = layui.upload,
+           $ = layui.jquery;
+
+       let demoListView = $('#detailsList'), uploadListIns = upload.render({
+           elem:"#MultipleUpload",
+           url:"/MultipleUpload",
+           accept:"file",
+           multiple:true,
+           auto:false,
+           bindAction:"#testListAction",
+           choose:function (obj){
+               let files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+               //读取本地文件
+               obj.preview(function(index, file, result){
+                   let tr = $(['<tr id="upload-'+ index +'">'
+                       ,'<td>'+ file.name +'</td>'
+                       ,'<td>'+ (file.size/1014).toFixed(1) +'kb</td>'
+                       ,'<td>等待上传</td>'
+                       ,'<td>'
+                       ,'<button class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>'
+                       ,'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>'
+                       ,'</td>'
+                       ,'</tr>'].join(''));
+
+                   //单个重传
+                   tr.find('.demo-reload').on('click', function(){
+                       obj.upload(index, file);
+                   });
+
+                   //删除
+                   tr.find('.demo-delete').on('click', function(){
+                       delete files[index]; //删除对应的文件
+                       tr.remove();
+                       uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                   });
+
+                   demoListView.append(tr);
+               });
+           },
+           done:function (res, index, upload){
+               if(res.success){ //上传成功
+                   var tr = demoListView.find('tr#upload-'+ index)
+                       ,tds = tr.children();
+                   tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                   tds.eq(3).html(''); //清空操作
+                   return delete this.files[index]; //删除文件队列已经上传成功的文件
+               }
+               this.error(index, upload);
+           },
+           error:function (index){
+               let tr = demoListView.find('tr#upload-'+ index)
+                   ,tds = tr.children();
+               tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+               tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+           }
+       });
+        form.on("submit(addHouseRecord)",function(){
+            $.post("addHouseRecord",$("#addHouseForm").serialize(),function(res){
+                if(res=="OK"){
+                    layer.msg("添加房源信息成功！",{icon:1,end:function(){window.location.href="addHouse";}});
+                    $("#addHouseForm")[0].reset();
+                }
+            })
+            return false;
+        });
+    });
+</script>
+<footer id="footer"></footer>
+</body>
+<script>
+    $(function (){
+        $.getScript("../static/js/jquery.min.js");
+        $.getScript("../static/layui/layui.all.js");
+        $.getScript("../static/bootstrap/js/bootstrap.min.js");
+        $("#header").load("../static/head.html");
+        $("#footer").load("../static/foot.html");
+    });
+</script>
+</html>

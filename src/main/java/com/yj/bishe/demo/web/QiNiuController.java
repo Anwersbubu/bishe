@@ -44,14 +44,14 @@ public class QiNiuController {
 
 	//房源图片上传
 	@PostMapping("/manyimg")
-	public JsonResult many(HttpServletRequest request) throws IOException {
-		JsonResult ret = null;
+	public JsonResult upload(HttpServletRequest request) throws IOException {
+		JsonResult ret;
 		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
 		String hidstr = request.getParameter("lid");
 		int hid = Integer.valueOf(hidstr);
-		if(files!=null) {
+		if(files.size() > 0) {
 		// 用来放多个图片的字符串
-		Map<String, String> imgs = new HashMap<String, String>();
+		Map<String, String> imgs = new HashMap<>();
 		int n = 1;
 		// 七牛的配置信息
 		UploadManager qiniu = new UploadManager(new Configuration(Zone.zone2()));

@@ -28,6 +28,10 @@ public class ListingsController {
     @Resource
     IListingsService listingsService;
 
+    //进入房源上传页
+    @RequestMapping("/users/upload")
+    public String uploadList(){ return "listUpload"; }
+
     //进入房源页
     @RequestMapping("/listings")
     public String listLings(){

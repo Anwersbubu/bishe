@@ -39,6 +39,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 user1.setUpassword("保密");
                 ret.setData("user",user1);
                 session.setAttribute("usersession",user);
+                session.setMaxInactiveInterval(60*60);//session有效期单位为秒
             }else {
                 ret = new JsonResult(false,"注册失败");
             }
@@ -61,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             selectOne.setUpassword("保密");
             ret = new JsonResult(true,"登陆成功");
             session.setAttribute("usersession",selectOne);
+            session.setMaxInactiveInterval(60*60);
             ret.setData("user",selectOne);
         }else {
             ret = new JsonResult(false,"电话号码或密码错误登陆失败");
