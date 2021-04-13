@@ -186,9 +186,9 @@
     <!-- 分页 -->
     <div id="fenye" class="layui-col-md8 layui-pull-center"></div>
     <script>
-        var p;
+        var p;//页码
         layui.use(['laypage'],function (){
-            var laypage = layui.laypage;
+            let laypage = layui.laypage;
             laypage.render({
                 elem:'fenye',
                 count:countList,
@@ -213,7 +213,7 @@
                 if (ret.success){
                     listsList = ret.data.listingsList;
                     addresss = ret.data.addressList;
-                    $("")
+                    $("#numspan").text(ret.data.num);
                     huizhilist(listsList,addresss);
                 } else alert(ret.message);
             });

@@ -152,7 +152,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
 
     @Override
     public JsonResult fenleichaxun(int aid,int page, String hprice, String hsize, String hfoo, String htow, String hdeco, String hfea, String hgeju) {
-        JsonResult ret = null;
+        JsonResult ret;
         if (aid > 0) {
             QueryWrapper<Listings> wrapper = new QueryWrapper<>();
             wrapper.eq("lstat","空闲");
@@ -173,7 +173,9 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
                 for (Listings l : listingsList){
                     addressList.add(addressMapper.selectById(l.getAid()).show());
                 }
-                ret.setData("num",listingsList.size());
+                //获取查询的记录总条数
+                Integer count = listingsMapper.selectCount(wrapper);
+                ret.setData("num",count);
                 ret.setData("listingsList",listingsList);
                 ret.setData("addressList",addressList);
             }else ret = new JsonResult(false,"分类查询失败,数据不全");
