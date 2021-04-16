@@ -1,6 +1,7 @@
 package com.yj.bishe.demo.web;
 
 
+import com.yj.bishe.demo.entity.Listings;
 import com.yj.bishe.demo.entity.User;
 import com.yj.bishe.demo.service.IListingsService;
 import com.yj.bishe.demo.vo.JsonResult;
@@ -12,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * <p>
@@ -28,10 +33,6 @@ public class ListingsController {
     @Resource
     IListingsService listingsService;
 
-    //进入房源上传页
-    @RequestMapping("/users/upload")
-    public String uploadList(){ return "listUpload"; }
-
     //进入房源页
     @RequestMapping("/listings")
     public String listLings(){
@@ -42,6 +43,26 @@ public class ListingsController {
     @GetMapping("/listdetails")
     public String listDetails(){
         return "listdata";
+    }
+
+    //进入房源上传页
+    @RequestMapping("/users/upload")
+    public String uploadList(){ return "listUpload"; }
+    //接收到数据后直接添加到数据库，成功跳转到房源详情页面，失败返回上传页面
+    @PostMapping("/users/addHouseRecord")
+    @ResponseBody
+    public void addHouse(Listings listings, String laddress, HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        if (listings.getLimg().equals(""))
+            listings.setLimg("{\"img1\":\"#\"}");
+        JsonResult jsonResult = listingsService.addList(listings, laddress, session);
+        try {
+        if (jsonResult.isSuccess()){
+            response.sendRedirect("http://localhost:8080/listdetails?lid="+jsonResult.getData().get("lid"));
+        }else
+            response.sendRedirect("http://localhost:8080/users/upload");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @PostMapping("/homedata")

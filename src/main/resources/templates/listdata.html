@@ -16,7 +16,22 @@
     <style>
     </style>
     <script>
-        let lid = location.search.substr(5, 1);
+        //抓取地址栏里参数
+        function getParam(){
+                     var search=location.search;    //获取location的search属性，保存在search中
+                     var params={};        //创建空对象params
+                     if(search!=""){        //如果search不是空字符串
+                             search.slice(1).split("&").forEach(    //?username=zhangdong&pwd=123456;//search去开头?，按&切割为数组，forEach
+                                     function(val){
+                                         var arr=val.split("=");        //将当前元素值按=切割，保存在arr中
+                                         params[arr[0]]=arr[1];        //向params中添加一个元素,属性名为arr[0],值为arr[1]
+
+                                     }
+                             );
+                         }
+                     return params;        //返回param
+                 }
+        let lid = getParam().lid;
         function djs() {
             alert("3秒后，自动跳转到上一页！");
             let num = "<p><em id=\"num\">3</em>秒后，自动跳转到上一页</p>";

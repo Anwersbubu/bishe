@@ -47,6 +47,16 @@ public class Address implements Serializable {
      */
     private String street;
 
+    public Address() {
+    }
+
+    public Address(String country, String province, String city, String area, String street) {
+        this.country = country;
+        this.province = province;
+        this.city = city;
+        this.area = area;
+        this.street = street;
+    }
 
     public Integer getAid() {
         return aid;

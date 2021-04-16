@@ -15,7 +15,21 @@
     <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
             type="text/javascript"></script>
     <script>
-        let aid = location.search.substr(4, 1);
+        function getParam(){
+            var search=location.search;    //获取location的search属性，保存在search中
+            var params={};        //创建空对象params
+            if(search!=""){        //如果search不是空字符串
+                search.slice(1).split("&").forEach(    //?username=zhangdong&pwd=123456;//search去开头?，按&切割为数组，forEach
+                    function(val){
+                        var arr=val.split("=");        //将当前元素值按=切割，保存在arr中
+                        params[arr[0]]=arr[1];        //向params中添加一个元素,属性名为arr[0],值为arr[1]
+
+                    }
+                );
+            }
+            return params;        //返回param
+        }
+        let aid = getParam().id;
         /*
         * listsList 房源列表
         * addresss 房源列表对应的地址

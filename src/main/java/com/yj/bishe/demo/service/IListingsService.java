@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yj.bishe.demo.vo.JsonResult;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -30,5 +31,8 @@ public interface IListingsService extends IService<Listings> {
 
     //分类查询
     JsonResult fenleichaxun(int aid, int page, String hprice, String hsize, String hfoo, String htow, String hdeco, String hfea, String hgeju);
+
+    //发布房源
+    JsonResult addList(Listings listings, String laddress, HttpSession session);
 
 }
