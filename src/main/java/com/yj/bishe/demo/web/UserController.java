@@ -34,7 +34,7 @@ public class UserController {
         return "dlzc";
     }
 
-    @RequestMapping("/gerenzx")//进入个人中心页
+    @RequestMapping("/users/gerenzx")//进入个人中心页
     public String gerenzxHtml(){
         return "gerenzx";
     }

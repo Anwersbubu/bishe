@@ -71,7 +71,7 @@
                     item = sessionStorage.getItem("usersession");
                     if (item != null) {
                         pares = JSON.parse(item);
-                        let li = "<li><a href='http://localhost:8080/gerenzx'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>欢迎: " + pares.uname + "</a> </li>";
+                        let li = "<li><a href='http://localhost:8080/users/gerenzx'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>欢迎: " + pares.uname + "</a> </li>";
                         $(".navbar-right").append(li);
                     } else {
                         let li = "<li><a href='http://localhost:8080/dlzc' class='bord layui-btn layui-btn-primary'><span class='glyphicon glyphicon-user' aria-hidden='true'></span>登陆 / 注册</a> </li>";
