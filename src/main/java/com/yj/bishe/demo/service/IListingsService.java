@@ -1,8 +1,11 @@
 package com.yj.bishe.demo.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yj.bishe.demo.entity.Listings;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yj.bishe.demo.vo.JsonResult;
+import com.yj.bishe.demo.vo.listVo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -34,5 +37,11 @@ public interface IListingsService extends IService<Listings> {
 
     //发布房源
     JsonResult addList(Listings listings, String laddress, HttpSession session);
+
+    //获取用户的发布房源列表
+    listVo getListsByUid(Page<Listings> page, int uid);
+
+    //下架房源
+    JsonResult downListByLid(int lid, int uid);
 
 }

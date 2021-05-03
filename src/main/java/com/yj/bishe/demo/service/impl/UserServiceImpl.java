@@ -72,16 +72,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     //更新用户信息(用户自己更新，不能更新uid、upassword、ushenf)
     @Override
-    public JsonResult userUpdateinfo(User user) {
+    public JsonResult userUpdateinfo(User user, HttpSession session) {
         JsonResult ret;
-        int i = userMapper.updateById(user);
-        if (i == 1){
-            ret = new JsonResult(true,"用户更新个人信息成功");
-            User selectById = userMapper.selectById(user.getUid());
-            ret.setData("user",selectById);
-        }else {
-            ret = new JsonResult(false,"用户更新个人信息失败");
+        String upassword = user.getUpassword();
+        if (upassword.equals("") || upassword.equals("保密"))
+            user.setUpassword(null);
+        else {
+            user.setUpassword(userMapper.MdPassword(upassword));
         }
+            int i = userMapper.updateById(user);
+            if (i == 1) {
+                ret = new JsonResult(true, "用户更新个人信息成功");
+                User selectById = userMapper.selectById(user.getUid());
+                session.setAttribute("usersession", selectById);
+                session.setMaxInactiveInterval(60*60);
+                ret.setData("user", selectById);
+            } else {
+                ret = new JsonResult(false, "用户更新个人信息失败");
+            }
         return ret;
     }
 

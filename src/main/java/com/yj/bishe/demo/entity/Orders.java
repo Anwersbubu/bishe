@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author demo
  * @since 2021-02-14
  */
-public class Order implements Serializable {
+public class Orders implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

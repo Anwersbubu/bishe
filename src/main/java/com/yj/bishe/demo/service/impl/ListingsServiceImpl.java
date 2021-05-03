@@ -8,15 +8,13 @@ import com.yj.bishe.demo.entity.*;
 import com.yj.bishe.demo.service.IListingsService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yj.bishe.demo.vo.JsonResult;
+import com.yj.bishe.demo.vo.listVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>
@@ -254,6 +252,66 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
                 } else ret = new JsonResult(false, "房源添加失败，地址异常");
             } else ret = new JsonResult(false, "房源添加失败，地址异常");
         } else ret = new JsonResult(false, "房源添加失败，地址异常");
+        return ret;
+    }
+
+    @Override
+    public listVo getListsByUid(Page<Listings> page, int uid) {
+        listVo ret;
+        if (uid > 0){
+            QueryWrapper<Listings> wrapper = new QueryWrapper<>();
+            wrapper.eq("uid",uid);
+            wrapper.notIn("lstat","下架");
+            List<Listings> listingsList = listingsMapper.selectPage(page,wrapper).getRecords();
+            if (listingsList.size() > 0){
+                ret = new listVo(0,"用户房源获取成功",listingsMapper.selectCount(wrapper));
+                List<Map<String,Object>> dataList = new ArrayList<>();
+                Map<String,Object> dataMap;
+                for (Listings l: listingsList) {
+                    dataMap = new HashMap<>();
+                    dataMap.put("lid",l.getLid());
+                    dataMap.put("lname",l.getLname());
+                    Addressinfo addressinfo = addressinfoMapper.selectById(l.getAid());
+                    if (addressinfo != null)
+                        dataMap.put("aid",addressinfoMapper.selectById(l.getAid()).show());
+                    else
+                        dataMap.put("aid","地址不明");
+                    dataMap.put("lsize",l.getLsize());
+                    dataMap.put("lparttern",l.getLparttern());
+                    dataMap.put("lprice",l.getLprice());
+                    dataMap.put("ltow",l.getLtow());
+                    dataMap.put("lfoo",l.getLfoo());
+                    dataMap.put("ldeco",l.getLdeco());
+                    dataMap.put("lfea",l.getLfea());
+                    dataMap.put("limg",l.getLimg());
+                    dataMap.put("ldesc",l.getLdesc());
+                    dataMap.put("lstat",l.getLstat());
+                    dataMap.put("ltime",l.getLtime().toLocalDate());
+                    dataList.add(dataMap);
+                }
+                ret.setData(dataList);
+            }else
+                ret = new listVo(301,"用户没有发布过房源",0);
+        }else
+            ret = new listVo(300,"获取用户id失败",0);
+        return ret;
+    }
+
+    @Override
+    public JsonResult downListByLid(int lid, int uid) {
+        JsonResult ret;
+        if (lid > 0){
+            Listings listings = listingsMapper.selectById(lid);
+            if (listings != null){
+                if (listings.getUid() == uid){
+                    listings.setLstat("下架");
+                    int update = listingsMapper.updateById(listings);
+                    if (update == 1){
+                        ret = new JsonResult(true,"房源下架成功");
+                    }else ret = new JsonResult(false,"下架失败");
+                }else ret = new JsonResult(false, "房源登记用户和操作用户不一致");
+            }else ret = new JsonResult(false,"房源数据库中异常");
+        }else ret = new JsonResult(false,"获取房源ID出错");
         return ret;
     }
 

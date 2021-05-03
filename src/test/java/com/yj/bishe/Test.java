@@ -1,6 +1,8 @@
 package com.yj.bishe;
 
 import com.yj.bishe.demo.BisheApplication;
+import com.yj.bishe.demo.dao.OrdersMapper;
+import com.yj.bishe.demo.entity.Orders;
 import com.yj.bishe.demo.service.IFavoService;
 import com.yj.bishe.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,15 @@ public class Test {
 
     @Resource
     IFavoService favoService;
+
+    @Autowired
+    OrdersMapper orderMapper;
+
+    @org.junit.jupiter.api.Test
+    public void testOrder(){
+        Orders order = orderMapper.selectById(1);
+        System.out.println(order.toString());
+    }
 
     @org.junit.jupiter.api.Test
     public void testuser(){

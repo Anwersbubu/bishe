@@ -97,7 +97,14 @@
                             });
                             let a2 = $("<a>", {
                                 text: '收藏',
-                                href: 'http://localhost:8080/users/favorites?lid=' + item.lid,
+                                href: 'javascript:;',
+                                click:function (){
+                                  $.post("/users/favorites",{"lid":item.lid},function (ret){
+                                      if (ret.success)
+                                          alert(ret.message);
+                                      else alert(ret.message);
+                                  })
+                                },
                                 class: 'btn btn-default',
                                 role: 'button'
                             });

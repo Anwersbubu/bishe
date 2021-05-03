@@ -1,11 +1,13 @@
 package com.yj.bishe.demo.web;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yj.bishe.demo.entity.Listings;
 import com.yj.bishe.demo.entity.User;
 import com.yj.bishe.demo.service.IListingsService;
 import com.yj.bishe.demo.vo.JsonResult;
 
+import com.yj.bishe.demo.vo.listVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,9 @@ public class ListingsController {
     @Resource
     IListingsService listingsService;
 
+    @RequestMapping("/house")
+    public String house(){ return "house"; }
+
     //进入房源页
     @RequestMapping("/listings")
     public String listLings(){
@@ -43,6 +48,27 @@ public class ListingsController {
     @GetMapping("/listdetails")
     public String listDetails(){
         return "listdata";
+    }
+
+    //进入房源列表状态修改
+    @RequestMapping("/users/liststate")
+    public String toListstate(){ return "liststate"; }
+    //获取我的房源列表
+    @GetMapping("/users/mylists")
+    @ResponseBody
+    public listVo myListsByUid(int page, int limit, HttpServletRequest request){
+        User usersession = (User) request.getSession().getAttribute("usersession");
+        Integer uid = usersession.getUid();
+        Page<Listings> pages = new Page<>((page-1),limit);
+        return listingsService.getListsByUid(pages,uid);
+    }
+
+    //房源下架
+    @PostMapping("/users/downlist")
+    @ResponseBody
+    public JsonResult downListByLid(int lid, HttpSession session){
+        User usersesion = (User)session.getAttribute("usersesion");
+        return listingsService.downListByLid(lid,usersesion.getUid());
     }
 
     //进入房源上传页

@@ -1,6 +1,7 @@
 package com.yj.bishe.demo.web;
 
 
+import com.alibaba.fastjson.JSON;
 import com.yj.bishe.demo.entity.User;
 import com.yj.bishe.demo.service.IUserService;
 import com.yj.bishe.demo.vo.JsonResult;
@@ -25,6 +26,9 @@ public class UserController {
 
     @Resource
     IUserService userService;
+
+    @RequestMapping("/users/userinfo")
+    public String toUserinfo(){ return "userinfo"; }
 
     @RequestMapping("/index")//进入主页
     public String indexHtml(){ return "index"; }
@@ -58,8 +62,8 @@ public class UserController {
 
     @PostMapping("/users/update")//更新用户个人信息
     @ResponseBody
-    public JsonResult userUpdate(User user){
-        return userService.userUpdateinfo(user);
+    public JsonResult userUpdate(String user, HttpSession session){
+        return userService.userUpdateinfo(JSON.parseObject(user,User.class),session);
     }
 
     @PostMapping("/users/query")//获取当前用户个人信息

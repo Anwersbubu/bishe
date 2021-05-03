@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单详情</title>
+    <link href="../static/layui/css/layui.css" rel="stylesheet" media="all">
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/layui/layui.js"></script>
+    <script>
+        //抓取地址栏里参数
+        function getParam(){
+            var search=location.search;    //获取location的search属性，保存在search中
+            var params={};        //创建空对象params
+            if(search!=""){        //如果search不是空字符串
+                search.slice(1).split("&").forEach(    //?username=zhangdong&pwd=123456;//search去开头?，按&切割为数组，forEach
+                    function(val){
+                        var arr=val.split("=");        //将当前元素值按=切割，保存在arr中
+                        params[arr[0]]=arr[1];        //向params中添加一个元素,属性名为arr[0],值为arr[1]
+
+                    }
+                );
+            }
+            return params;        //返回param
+        }
+        let oid = getParam().id;
+        alert(oid);
+    </script>
+</head>
+<body>
+订单详情表
+</body>
+</html>

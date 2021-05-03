@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>历史订单列表</title>
+    <link href="../static/layui/css/layui.css" rel="stylesheet" media="all">
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/layui/layui.js"></script>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>我的历史订单</legend>
+</fieldset>
+<table class="layui-table" lay-data="{width: 1318, height:330, url:'/users/myorder/', page:true, id:'idTest'}" lay-filter="demo">
+    <thead>
+    <tr>
+        <th lay-data="{type:'checkbox', fixed: 'left'}"></th>
+        <th lay-data="{field:'oid', width: 110, align:'center', sort: true, fixed: true}">订单ID</th>
+        <th lay-data="{field:'lid', width: 90, align:'center'}">房源ID</th>
+        <th lay-data="{field:'lname', width: 90, align:'center'}">房源名</th>
+        <th lay-data="{field:'laddress', width: 90, align:'center'}">房源地址</th>
+        <th lay-data="{field:'uname', width: 90, align:'center'}">房东姓名</th>
+        <th lay-data="{field:'uphone', width: 120, align:'center'}">房东联系方式</th>
+        <th lay-data="{field:'dura', width: 110, align:'center', sort: true}">租赁时长</th>
+        <th lay-data="{field:'money', width: 110, align:'center', sort: true}">租赁金额</th>
+        <th lay-data="{field:'time', width: 180, align:'center'}">订单时间</th>
+        <th lay-data="{fixed: 'right', width:140, align:'center', toolbar: '#barDemo'}">操作</th>
+    </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+</script>
+
+<!-- 注意：如果你直接复制所有代码到本地，上述 JS 路径需要改成你本地的 -->
+<script>
+    layui.use('table', function(){
+        var table = layui.table;
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+        //监听工具条
+        table.on('tool(demo)', function(obj){
+            var data = obj.data;
+            if(obj.event === 'detail'){
+                location.href = "http://localhost:8080/users/orderdetails?id="+data.lid;
+            }
+        });
+
+        $('.demoTable .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

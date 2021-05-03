@@ -23,7 +23,7 @@ public interface IUserService extends IService<User> {
     JsonResult userLogin(String uphone, String upassword, HttpSession session);
 
     //更新用户信息
-    JsonResult userUpdateinfo(User user);
+    JsonResult userUpdateinfo(User user, HttpSession session);
 
     //管理员更新用户信息
     JsonResult adminUpdateUser(User user);
