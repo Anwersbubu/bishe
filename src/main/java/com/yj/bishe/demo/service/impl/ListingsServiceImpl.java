@@ -108,8 +108,8 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
         wrapper1.eq("lid", lid);
         wrapper1.eq("lstat", "空闲");
         Listings list = listingsMapper.selectOne(wrapper1);
-        ret = new JsonResult(true, "房源信息查询成功");
         if (list != null && list.getAid() != null && list.getUid() != null) {
+            ret = new JsonResult(true, "房源信息查询成功");
             Address address = addressMapper.selectById(list.getAid());
             String uphone = userMapper.selectById(list.getUid()).getUphone();
             ret.setData("cell", uphone);
@@ -132,6 +132,7 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
             } else {
                 ret.setData("adress", null);
             }
+            ret.setData("uptime",list.getLtime().toLocalDate());
             ret.setData("list", list);
         } else
             ret = new JsonResult(false, "房源信息查询失败");

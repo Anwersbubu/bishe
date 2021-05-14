@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单生成</title>
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/layui/css/layui.css" media="all" rel="stylesheet">
+    <link href="../static/css/bannercss.css" rel="stylesheet">
+    <link href="../static/css/details.css" rel="stylesheet">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_848666_pri5cwk3xde.css"/>
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script charset="utf-8" src="../static/layui/layui.all.js" type="text/javascript"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="https://webapi.amap.com/maps?v=1.4.15&key=36a678df773856fff019cc42ebfc80c0"
+            type="text/javascript"></script>
+    <script>
+        //抓取地址栏里参数
+        function getParam(){
+            var search=location.search;    //获取location的search属性，保存在search中
+            var params={};        //创建空对象params
+            if(search!=""){        //如果search不是空字符串
+                search.slice(1).split("&").forEach(    //?username=zhangdong&pwd=123456;//search去开头?，按&切割为数组，forEach
+                    function(val){
+                        var arr=val.split("=");        //将当前元素值按=切割，保存在arr中
+                        params[arr[0]]=arr[1];        //向params中添加一个元素,属性名为arr[0],值为arr[1]
+
+                    }
+                );
+            }
+            return params;        //返回param
+        }
+        let id = getParam().id;
+        var orderdata;
+        $.ajax({
+           url:"/users/getlistbyid",
+           type:"post",
+            async:false,
+           data:{"id":id},
+            xhrFields: {
+                withCredentials: true//允许跨域带cookie
+            },
+            success:function (ret){
+               if (ret.success){
+                   orderdata = ret.data;
+                   console.log(orderdata);
+               }else {
+                  alert(ret.message);
+                  window.history.back();
+               }
+            }
+        });
+    </script>
+</head>
+<body>
+<header id="header"></header>
+<section class="layui-container wrapper">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+        <legend>订单确认生成</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote layui-container wrapper">
+        <!--    轮播图-->
+        <div class="carousel-image layui-pull-left layui-col-md7">
+            <div class="layui-carousel" id="details-image">
+                <div carousel-item style="float: left;">
+                </div>
+            </div>
+        </div>
+        <div class="details-info layui-pull-right layui-col-md5 ">
+            <div class="show-price">
+                <span class="sale-price">租金</span><br>
+                <span class="area">发布时间</span>
+            </div>
+            <hr>
+            <div class="show-house-name">
+            </div>
+            <hr>
+            <div class="house-model">
+                <ul></ul>
+            </div>
+            <hr>
+            <div class="order-btn-container">
+                <!--            <button class="order-btn" lay-submit lay-filter="addOrder">现在预定</button>-->
+            </div>
+        </div>
+    </blockquote>
+</section>
+<footer id="footer"></footer>
+</body>
+<script>
+    $(function (){
+        $.getScript("../static/js/jquery.min.js");
+        $.getScript("../static/layui/layui.all.js");
+        $.getScript("../static/bootstrap/js/bootstrap.min.js");
+        $("#header").load("../static/head.html");
+        $("#footer").load("../static/foot.html");
+        if (orderdata != null || orderdata != undefined){
+            $(".sale-price").text(orderdata.list.lname);
+            $(".area").text("发布时间:"+orderdata.uptime);
+            let address = "<p><span class='field'>地址：</span><span class='name'>"+orderdata.adress+"</span></p>";
+            let leixin = "<p><span class='field'>价格：</span><span class='name'>"+orderdata.list.lprice+"￥/月</span></p>";
+            let lname = "<p><span class='field'>房东：</span><span class='name'>"+orderdata.list.uname+"</span></p>"
+            let lphone = "<p><span class='field'>联系电话：</span><span class='name'>"+orderdata.cell+"</span></p>"
+            $(".show-house-name").append(address).append(leixin).append(lname).append(lphone);
+            let biaoqian = $(".house-model ul").eq(0);
+            if (orderdata.list.lparttern != null){biaoqian.append("<li><p>"+orderdata.list.lparttern+"</p><span>规模</span></li>");}
+            if (orderdata.list.lsize != null){biaoqian.append("<li><p>"+orderdata.list.lsize+"平米</p><span>建筑面积</span></li>");}
+            if (orderdata.list.ltow != null){biaoqian.append("<li><p>"+orderdata.list.ltow+"</p><span>朝向</span></li>");}
+            $(".order-btn-container").append("<label>租赁时长：<input type='number' class='order-btn' style='margin:0;color:black;background: rgba(0,0,0,0);border: solid 1px pink'>月")
+                                        .append("<br><span class='field'>总金额：<span class='name money'></span></span>");
+            //轮播图js
+            let imgs = JSON.parse(orderdata.list.limg);
+            for (let i in imgs) {
+                let lunboimg = $("<img>").attr("src",imgs[i]);
+                $("#details-image div").eq(0).append(lunboimg);
+            }
+            layui.use('carousel',function (){
+                let carousel = layui.carousel;
+                carousel.render({
+                    elem: "#details-image",
+                    width: "100%",
+                    height: "400px",
+                    interval:"3000",
+                    anim: "default"
+                });
+            });
+        }else window.history.back();
+        //支付
+        let money = $(".money").eq(0);
+        let time = $("input[type=number]").eq(0);
+        time.on('change',function (){
+            money.text($(this).val()*orderdata.list.lprice);
+            $(".order-btn-container").append("<br><button class='order-btn topay'>订单支付</button>");
+            $(".topay").eq(0).on('click',function (){
+                $.ajax({
+                    url:"/users/alipayTradePagePay",
+                    type: "post",
+                    async:false,
+                    data:{"lid":id,"time":time.val(),"money":money.text()},
+                    xhrFields: {
+                        withCredentials: true//允许跨域带cookie
+                    },
+                    success:function (ret) {
+                        if (ret.success)
+                            console.log(ret.data.result)
+                        $(".layui-elem-quote").eq(0).html(ret.data.result);
+                    }
+                });
+            });
+        });
+    });
+</script>
+</html>
