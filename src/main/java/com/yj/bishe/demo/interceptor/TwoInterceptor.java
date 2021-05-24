@@ -26,6 +26,7 @@ public class TwoInterceptor implements HandlerInterceptor{
 		if(user!=null) {
 			Integer ushenf = user.getUshenf();
 			if(ushenf == 1) {
+				System.out.println("管理员");
 				return true;
 			}
 			else {

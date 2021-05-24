@@ -257,12 +257,15 @@ public class ListingsServiceImpl extends ServiceImpl<ListingsMapper, Listings> i
     }
 
     @Override
-    public listVo getListsByUid(Page<Listings> page, int uid) {
+    public listVo getListsByUid(Page<Listings> page, int uid, int shengf) {
         listVo ret;
         if (uid > 0){
             QueryWrapper<Listings> wrapper = new QueryWrapper<>();
-            wrapper.eq("uid",uid);
-            wrapper.notIn("lstat","下架");
+            if (shengf == 1) {
+            }else if (shengf == 0) {
+                wrapper.eq("uid", uid);
+                wrapper.notIn("lstat", "下架");
+            }
             List<Listings> listingsList = listingsMapper.selectPage(page,wrapper).getRecords();
             if (listingsList.size() > 0){
                 ret = new listVo(0,"用户房源获取成功",listingsMapper.selectCount(wrapper));

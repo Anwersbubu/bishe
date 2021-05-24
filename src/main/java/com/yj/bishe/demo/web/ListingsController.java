@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,14 +52,28 @@ public class ListingsController {
     //进入房源列表状态修改
     @RequestMapping("/users/liststate")
     public String toListstate(){ return "liststate"; }
+    //进入管理员房源列表状态修改
+    @RequestMapping("/admin/liststate")
+    public String toAdminListstate(){ return "adminliststate"; }
     //获取我的房源列表
     @GetMapping("/users/mylists")
     @ResponseBody
     public listVo myListsByUid(int page, int limit, HttpServletRequest request){
         User usersession = (User) request.getSession().getAttribute("usersession");
         Integer uid = usersession.getUid();
+        Integer ushenf = usersession.getUshenf();
         Page<Listings> pages = new Page<>((page-1),limit);
-        return listingsService.getListsByUid(pages,uid);
+        return listingsService.getListsByUid(pages,uid,ushenf);
+    }
+    //获取我的房源列表admin
+    @GetMapping("/admin/mylists")
+    @ResponseBody
+    public listVo adminListsByUid(int page, int limit, HttpServletRequest request){
+        User usersession = (User) request.getSession().getAttribute("usersession");
+        Integer uid = usersession.getUid();
+        Integer ushenf = usersession.getUshenf();
+        Page<Listings> pages = new Page<>((page-1),limit);
+        return listingsService.getListsByUid(pages,uid,ushenf);
     }
 
     //房源下架

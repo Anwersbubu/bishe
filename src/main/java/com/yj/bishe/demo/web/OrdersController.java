@@ -46,12 +46,24 @@ public class OrdersController {
     @RequestMapping("/users/listorder")
     public String toListOrer(){ return "orderlist";}
 
+    //去到用户订单列表页面
+    @RequestMapping("/admin/listorder")
+    public String adminListOrer(){ return "adminorderlist";}
+
     //获取用户的订单
     @RequestMapping("/users/myorder")
     @ResponseBody
     public orderVo getMyOrders(int page, int limit, HttpServletRequest request){
         User usersession = (User) request.getSession().getAttribute("usersession");
-        return orderService.getOrdersBy(usersession.getUid(), page - 1, limit);
+        return orderService.getOrdersBy(usersession.getUshenf(),usersession.getUid(), page - 1, limit);
+    }
+
+    //获取用户的订单
+    @RequestMapping("/admin/orders")
+    @ResponseBody
+    public orderVo adminOrders(int page, int limit, HttpServletRequest request){
+        User usersession = (User) request.getSession().getAttribute("usersession");
+        return orderService.getOrdersBy(usersession.getUshenf(),usersession.getUid(), page - 1, limit);
     }
 
     //获取房源信息生成订单
@@ -59,8 +71,14 @@ public class OrdersController {
     @ResponseBody
     public JsonResult getListByLid(int id, HttpSession session){
         JsonResult result = listingsService.listDataByLid(id);
-
         return result;
+    }
+
+    //获取订单详情
+    @PostMapping("/users/showorder")
+    @ResponseBody
+    public JsonResult showOrderByOid(int oid){
+        return orderService.getOrderDataById(oid);
     }
 
 }

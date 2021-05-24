@@ -67,9 +67,11 @@ public class FavoServiceImpl extends ServiceImpl<FavoMapper, Favo> implements IF
     }
 
     @Override
-    public listVo showFavo(int page, int limit, int uid) {
+    public listVo showFavo(int page, int limit, int uid, int ushengf) {
         listVo ret;
         QueryWrapper<Favo> wrapper = new QueryWrapper<>();
+        if (ushengf == 1);
+        else if (ushengf == 0)
         wrapper.eq("uid",uid);
         Page<Favo> pages = new Page<>(page-1,limit);
         List<Favo> favoList = favoMapper.selectPage(pages, wrapper).getRecords();

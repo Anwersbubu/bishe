@@ -41,7 +41,8 @@ public class FavoController {
     public listVo myFavo(int page, int limit, HttpServletRequest request){
         User usersession = (User) request.getSession().getAttribute("usersession");
         Integer uid = usersession.getUid();
-        return favoService.showFavo(page,limit,uid);
+        Integer ushenf = usersession.getUshenf();
+        return favoService.showFavo(page,limit,uid,ushenf);
     }
 
     //房源收藏

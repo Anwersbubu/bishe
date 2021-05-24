@@ -42,7 +42,5 @@ public class JsonResult {
 	public String toString() {
 		return "JsonResult [success=" + success + ", message=" + message + ", data=" + data + "]";
 	}
-	
-	
-	
+
 }

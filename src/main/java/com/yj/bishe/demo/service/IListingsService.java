@@ -39,7 +39,7 @@ public interface IListingsService extends IService<Listings> {
     JsonResult addList(Listings listings, String laddress, HttpSession session);
 
     //获取用户的发布房源列表
-    listVo getListsByUid(Page<Listings> page, int uid);
+    listVo getListsByUid(Page<Listings> page, int uid, int ushengf);
 
     //下架房源
     JsonResult downListByLid(int lid, int uid);

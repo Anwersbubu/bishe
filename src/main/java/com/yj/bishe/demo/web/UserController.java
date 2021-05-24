@@ -30,8 +30,16 @@ public class UserController {
     @RequestMapping("/users/userinfo")
     public String toUserinfo(){ return "userinfo"; }
 
+    @RequestMapping("/admin/admininfo")
+    public String toAdmininfo(){ return "admininfo"; }
+
     @RequestMapping("/index")//进入主页
     public String indexHtml(){ return "index"; }
+
+    @RequestMapping("/admin/aindex")//进入管理员页面
+    public String adminIndexHtml(){
+        return "admin";
+    }
 
     @RequestMapping("/dlzc")//进入登录注册页
     public String dlzcHtml(){

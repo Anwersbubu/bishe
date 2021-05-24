@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员面板</title>
+    <link href="../static/layui/css/layui.css" rel="stylesheet" media="all">
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="../static/layui/layui.js" charset="UTF-8" type="text/javascript"></script>
+    <script>
+        var user = JSON.parse(sessionStorage.getItem("usersession"));
+    </script>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+    <legend>信息显示和修改</legend>
+</fieldset>
+<form id="userinfo" class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="uid">
+            <input type="text" name="uname" lay-verify="title" autocomplete="off" placeholder="请输用户名" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-block">
+            <input type="password" name="upassword" placeholder="请输入密码" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">手机号码</label>
+            <div class="layui-input-inline">
+                <input type="tel" name="uphone" lay-verify="required|phone" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="usex" value="男" title="男" checked="checked">
+            <input type="radio" name="usex" value="女" title="女">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证</label>
+        <div class="layui-input-block">
+            <input type="text" name="ucardid" lay-verify="identity" placeholder="" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">自我介绍</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" name="udesc"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button" class="layui-btn layui-btn-normal" id="LAY-component-form-setval">查看用户信息</button>
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即更新</button>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    layui.use(['form'], function(){
+        var form = layui.form
+            ,layer = layui.layer;
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            console.log(JSON.stringify(data.field));
+            $.ajax({
+               url:"http://localhost:8080/users/update",
+               type:"post",
+                data: {"user":JSON.stringify(data.field)},
+                xhrFields: {
+                    withCredentials: true//允许跨域带cookie
+                },
+                success:function (ret){
+                    sessionStorage.setItem("usersession",JSON.stringify(ret.data.user));
+                }
+            });
+            return false;
+        });
+
+        //表单赋值
+        layui.$('#LAY-component-form-setval').on('click', function(){
+            form.val('example', {
+                "uid":user.uid
+                ,"uname": user.uname
+                ,"upassword": user.upassword
+                ,"uphone": user.uphone
+                ,"sex": user.usex
+                ,"ucardid":user.ucardid
+                ,"udesc": user.udesc
+            });
+        });
+
+        //表单取值
+        layui.$('#LAY-component-form-getval').on('click', function(){
+            var data = form.val('example');
+            alert(JSON.stringify(data));
+        });
+
+    });
+</script>
+
+</html>

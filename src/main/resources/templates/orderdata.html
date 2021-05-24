@@ -23,10 +23,114 @@
             return params;        //返回param
         }
         let oid = getParam().id;
-        alert(oid);
+        var orderinfo;
+        $.ajax({
+            url: "/users/showorder",
+            type:"post",
+            xhrFields: { withCredentials: true },
+            async:false,
+            data:{"oid":oid},
+            success:function (ret){
+                if (ret.success){
+                    orderinfo = ret.data;
+                }else alert(ret.message);
+            }
+        });
     </script>
 </head>
 <body>
-订单详情表
+<section class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-sm12 warning">
+            <fieldset class="layui-elem-field layui-field-title">
+                <legend style="font-size: 26px">订单详情</legend>
+            </fieldset>
+            <form class="layui-form" >
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋标题</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="lname" required lay-verify="required" placeholder="(必填)显示在推荐卡片上的名字">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋地址</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="laddress" required lay-verify="required" placeholder="(必填)XX国XX省XX市XX区XX街道">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房东</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="uname" required lay-verify="required" placeholder="(必填)房屋面积">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">联系方式</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="uphone" required lay-verify="required" placeholder="(必填)房屋面积">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋大小</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" id="lsize" required lay-verify="required" placeholder="(必填)房屋面积">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋格局</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="lparttern" required lay-verify="required" placeholder="(必填)几室几厅几卫">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋价格</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" id="lprice" required lay-verify="required" placeholder="(必填)">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">房屋描述</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" id="ldesc" placeholder="(选填)描述房屋的两点，让大家更好的了解哦" required lay-verify="required"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单总金额</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" id="money" required lay-verify="required" placeholder="(必填)">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单生成</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="text" id="ordertime" required lay-verify="required" placeholder="(必填)">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">订单有效天数</label>
+                    <div class="layui-input-block">
+                        <input class="layui-input" type="number" id="orderdur" required lay-verify="required" placeholder="(必填)">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<script>
+    let orders = orderinfo.orderdata;
+    let listing = orderinfo.lists;
+    let user = orderinfo.user;
+    $("#lname").val(listing.lname);
+    $("#uphone").val(user.uphone);
+    $("#laddress").val(orderinfo.addressinfo);
+    $("#uname").val(user.uname);
+    $("#lsize").val(listing.lsize);
+    $("#lparttern").val(listing.lparttern);
+    $("#lprice").val(listing.lprice);
+    $("#money").val(orders.money);
+    $("#ldesc").val(listing.ldesc);
+    $("#ordertime").val(orders.time);
+    $("#orderdur").val(orders.dura);
+</script>
 </body>
 </html>

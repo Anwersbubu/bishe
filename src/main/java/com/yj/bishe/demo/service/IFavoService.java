@@ -22,7 +22,7 @@ public interface IFavoService extends IService<Favo> {
     JsonResult favoritesByLid(Integer uid, Integer lid);
 
     //获取收藏标表
-    listVo showFavo(int page, int limit, int uid);
+    listVo showFavo(int page, int limit, int uid, int ushengf);
 
     //取消收藏
     JsonResult delFavoByUidAndLid(int uid, int lid);

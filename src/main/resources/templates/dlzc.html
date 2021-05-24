@@ -96,7 +96,10 @@ $(function (){
                 success: function (ret) {
                     if (ret.success) {
                         sessionStorage.setItem("usersession", JSON.stringify(ret.data.user));
-                        window.parent.location.href = "http://localhost:8080/index";
+                        if (ret.data.user.ushenf==1){
+                            location.href = "http://localhost:8080/admin/aindex";
+                        }else
+                            window.parent.location.href = "http://localhost:8080/index";
                     } else {
                         alert(ret.message);
                     }
